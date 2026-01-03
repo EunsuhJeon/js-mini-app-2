@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angler's Trial Mini Game</title>
+  <link rel="stylesheet" href="styles/styles.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+  <!-- Game Boy Frame -->
+  <div id="gameboy-frame">
+    <div id="game-container">
+      <div class="screen-frame">
+        <div class="gb-screen">
+          
+          <!-- Landing Page -->
+      <div id="landing-page" class="screen">
+        <div class="landing-content">
+          <div class="title-section">
+            <h1>ANGLER'S</h1>
+            <h1>TRIAL</h1>
+          </div>
+          <div class="fish-icon">
+            <img src="./assets/fish/example.png" alt="">
+          </div>
+          <button id="start-button" class="pixel-button">▶ START</button>
+          <div class="instruction-text">PRESS START</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('start-button').addEventListener('click', () =>{
+        window.location.href = './pages/ingame.html';
+    })
+  </script>
+</body>
+</html>
