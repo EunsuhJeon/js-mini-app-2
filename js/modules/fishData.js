@@ -67,5 +67,40 @@ export const fishData = [
         description: 'Apex predator of lakes. Lure recommended.',
         points: 250,
         image: 'example.png'
+    },
+
+    // ===== SEA FISH =====
+    {
+        id: 'sea_01',
+        name: 'Tuna',
+        biome: 'sea',
+        rarity: 'common',
+        depth: 'deep',
+        bait: 'shrimp',
+        description: 'Large oceanic fish. Deep waters only.',
+        points: 150,
+        image: 'example.png'
+    },
+    {
+        id: 'sea_02',
+        name: 'Mackerel',
+        biome: 'sea',
+        rarity: 'common',
+        depth: 'medium',
+        bait: 'worm',
+        description: 'Fast swimmer. Medium depth with worms.',
+        points: 90,
+        image: 'example.png'
+    },
+    {
+        id: 'sea_03',
+        name: 'Squid',
+        biome: 'sea',
+        rarity: 'rare',
+        depth: 'medium',
+        bait: 'shrimp',
+        description: 'Mysterious cephalopod. Requires precise timing.',
+        points: 300,
+        image: 'example.png'
     }
 ];
