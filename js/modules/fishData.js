@@ -32,5 +32,40 @@ export const fishData = [
         description: 'Rare deep-water fish. Requires shrimp bait.',
         points: 200,
         image: 'example.png'
+    },
+
+    // ===== LAKE FISH =====
+    {
+        id: 'lake_01',
+        name: 'Bass',
+        biome: 'lake',
+        rarity: 'common',
+        depth: 'medium',
+        bait: 'lure',
+        description: 'Aggressive lake fish. Responds to lures.',
+        points: 120,
+        image: 'example.png'
+    },
+    {
+        id: 'lake_02',
+        name: 'Perch',
+        biome: 'lake',
+        rarity: 'common',
+        depth: 'shallow',
+        bait: 'worm',
+        description: 'Small but tasty. Often in shallow areas.',
+        points: 70,
+        image: 'example.png'
+    },
+    {
+        id: 'lake_03',
+        name: 'Pike',
+        biome: 'lake',
+        rarity: 'rare',
+        depth: 'deep',
+        bait: 'lure',
+        description: 'Apex predator of lakes. Lure recommended.',
+        points: 250,
+        image: 'example.png'
     }
 ];
