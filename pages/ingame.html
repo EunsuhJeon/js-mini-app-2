@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Angler's Trial Mini Game</title>
-    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
@@ -486,35 +486,46 @@
     const meterBar = document.querySelector('.meter-bar')
     const zones = document.querySelectorAll('.zone')
 
-    let stopped = false
+    let stopped = false;
 
-    depthMeter.addEventListener('click', () => {
-    if (stopped) return
-    stopped = true
+    function stopCursor() {
+        if (stopped) return;
+        stopped = true;
 
-    const cursorStyle = getComputedStyle(cursor)
-    const cursorLeft = parseFloat(cursorStyle.left)
+        const cursorStyle = getComputedStyle(cursor);
+        const cursorLeft = parseFloat(cursorStyle.left);
 
-    cursor.style.animationPlayState = 'paused'
+        cursor.style.animationPlayState = 'paused';
 
-    const barRect = meterBar.getBoundingClientRect()
-    const cursorCenter = barRect.left + cursorLeft + cursor.offsetWidth / 2
+        const barRect = meterBar.getBoundingClientRect();
+        const cursorCenter = barRect.left + cursorLeft + cursor.offsetWidth / 2;
 
-    let resultZone = null
+        let resultZone = null;
 
-    zones.forEach(zone => {
-        const rect = zone.getBoundingClientRect()
-        if (cursorCenter >= rect.left && cursorCenter <= rect.right) {
-        resultZone = zone.classList[1]
+        zones.forEach(zone => {
+            const rect = zone.getBoundingClientRect();
+            if (cursorCenter >= rect.left && cursorCenter <= rect.right) {
+                resultZone = zone.classList[1];
+            }
+        });
+
+        console.log(resultZone);
+
+        if (resultZone) {
+            document.getElementById('bite-meter').classList.remove('hidden');
+            document.getElementById('depth-meter').classList.add('hidden');
         }
-    })
-
-    console.log(resultZone);
-    if(resultZone){
-        document.getElementById('bite-meter').classList.remove('hidden');
-        document.getElementById('depth-meter').classList.add('hidden');
     }
-    })
+
+    // 클릭 이벤트
+    depthMeter.addEventListener('click', stopCursor);
+
+    // 스페이스바 이벤트
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') {
+            stopCursor();
+        }
+    });
   </script>
 
 <!-- Bite meter event -->
