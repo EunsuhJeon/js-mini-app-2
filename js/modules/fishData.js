@@ -104,3 +104,13 @@ export const fishData = [
         image: 'example.png'
     }
 ];
+
+// Get a fish by its biome
+export function getFishByBiome(biome) {
+    return fishData.filter(fish => fish.biome === biome);
+}
+
+// Get a fish by its ID
+export function getFishById(id) {
+    return fishData.find(fish => fish.id === id);
+}
