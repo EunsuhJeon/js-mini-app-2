@@ -6,9 +6,7 @@ const fishData = [
         biome: "river",
         depth: "medium",  // S=shallow, M=medium, P=deep
         bait: "fly",
-        rarity: "common",  // common, rare, epic
-        image: "assets/fish/trout.png",
-        description: "A common river fish that prefers medium depth."
+        image: "assets/fish/trout.png"
     },
     {
         id: 2,
@@ -16,9 +14,7 @@ const fishData = [
         biome: "river",
         depth: "shallow",
         bait: "worm",
-        rarity: "common",
-        image: "assets/fish/carp.png",
-        description: "Found in shallow waters, loves worms."
+        image: "assets/fish/carp.png"
     },
     {
         id: 3,
@@ -26,9 +22,7 @@ const fishData = [
         biome: "river",
         depth: "deep",
         bait: "shrimp",
-        rarity: "rare",
-        image: "assets/fish/catfish.png",
-        description: "A nocturnal predator of the deep river."
+        image: "assets/fish/catfish.png"
     },
     
     // LAKE FISH (2-3 peces)
@@ -38,9 +32,7 @@ const fishData = [
         biome: "lake",
         depth: "shallow",
         bait: "worm",
-        rarity: "common",
-        image: "assets/fish/perch.png",
-        description: "Small but aggressive lake fish."
+        image: "assets/fish/perch.png"
     },
     {
         id: 5,
@@ -48,9 +40,7 @@ const fishData = [
         biome: "lake",
         depth: "medium",
         bait: "lure",
-        rarity: "rare",
-        image: "assets/fish/pike.png",
-        description: "Apex predator of the lake."
+        image: "assets/fish/pike.png"
     },
     {
         id: 6,
@@ -58,9 +48,7 @@ const fishData = [
         biome: "lake",
         depth: "deep",
         bait: "lure",
-        rarity: "epic",
-        image: "assets/fish/bass.png",
-        description: "Legendary bass from the deepest parts."
+        image: "assets/fish/bass.png"
     },
     
     // SEA FISH (2-3 peces)
@@ -70,9 +58,7 @@ const fishData = [
         biome: "sea",
         depth: "deep",
         bait: "shrimp",
-        rarity: "rare",
-        image: "assets/fish/tuna.png",
-        description: "Fast swimmer of the open sea."
+        image: "assets/fish/tuna.png"
     },
     {
         id: 8,
@@ -80,9 +66,7 @@ const fishData = [
         biome: "sea",
         depth: "medium",
         bait: "shrimp",
-        rarity: "common",
         image: "assets/fish/squid.png",
-        description: "Uses ink to escape predators."
     },
     {
         id: 9,
@@ -90,9 +74,7 @@ const fishData = [
         biome: "sea",
         depth: "shallow",
         bait: "worm",
-        rarity: "epic",
-        image: "assets/fish/puffer.png",
-        description: "Inflates when threatened."
+        image: "assets/fish/puffer.png"
     }
 ];
 
