@@ -1,107 +1,98 @@
-export const fishData = [
-    // ===== RIVER FISH =====
+const fishData = [
+    // RIVER FISH (2-3 peces)
     {
-        id: 'river_01',
-        name: 'Trout',
-        biome: 'river',
-        rarity: 'common',
-        depth: 'medium',
-        bait: 'fly',
-        description: 'A common river fish. Prefers flies in medium depth.',
-        points: 100,
-        image: 'example.png'
+        id: 1,
+        name: "Trout",
+        biome: "river",
+        depth: "medium",  // S=shallow, M=medium, P=deep
+        bait: "fly",
+        rarity: "common",  // common, rare, epic
+        image: "assets/fish/trout.png",
+        description: "A common river fish that prefers medium depth."
     },
     {
-        id: 'river_02',
-        name: 'Carp',
-        biome: 'river',
-        rarity: 'common',
-        depth: 'shallow',
-        bait: 'worm',
-        description: 'Found in shallow waters. Loves worms.',
-        points: 80,
-        image: 'example.png'
+        id: 2,
+        name: "Carp",
+        biome: "river",
+        depth: "shallow",
+        bait: "worm",
+        rarity: "common",
+        image: "assets/fish/carp.png",
+        description: "Found in shallow waters, loves worms."
     },
     {
-        id: 'river_03',
-        name: 'Catfish',
-        biome: 'river',
-        rarity: 'rare',
-        depth: 'deep',
-        bait: 'shrimp',
-        description: 'Rare deep-water fish. Requires shrimp bait.',
-        points: 200,
-        image: 'example.png'
+        id: 3,
+        name: "Catfish",
+        biome: "river",
+        depth: "deep",
+        bait: "shrimp",
+        rarity: "rare",
+        image: "assets/fish/catfish.png",
+        description: "A nocturnal predator of the deep river."
     },
-
-    // ===== LAKE FISH =====
+    
+    // LAKE FISH (2-3 peces)
     {
-        id: 'lake_01',
-        name: 'Bass',
-        biome: 'lake',
-        rarity: 'common',
-        depth: 'medium',
-        bait: 'lure',
-        description: 'Aggressive lake fish. Responds to lures.',
-        points: 120,
-        image: 'example.png'
+        id: 4,
+        name: "Perch",
+        biome: "lake",
+        depth: "shallow",
+        bait: "worm",
+        rarity: "common",
+        image: "assets/fish/perch.png",
+        description: "Small but aggressive lake fish."
     },
     {
-        id: 'lake_02',
-        name: 'Perch',
-        biome: 'lake',
-        rarity: 'common',
-        depth: 'shallow',
-        bait: 'worm',
-        description: 'Small but tasty. Often in shallow areas.',
-        points: 70,
-        image: 'example.png'
+        id: 5,
+        name: "Pike",
+        biome: "lake",
+        depth: "medium",
+        bait: "lure",
+        rarity: "rare",
+        image: "assets/fish/pike.png",
+        description: "Apex predator of the lake."
     },
     {
-        id: 'lake_03',
-        name: 'Pike',
-        biome: 'lake',
-        rarity: 'rare',
-        depth: 'deep',
-        bait: 'lure',
-        description: 'Apex predator of lakes. Lure recommended.',
-        points: 250,
-        image: 'example.png'
+        id: 6,
+        name: "Bass",
+        biome: "lake",
+        depth: "deep",
+        bait: "lure",
+        rarity: "epic",
+        image: "assets/fish/bass.png",
+        description: "Legendary bass from the deepest parts."
     },
-
-    // ===== SEA FISH =====
+    
+    // SEA FISH (2-3 peces)
     {
-        id: 'sea_01',
-        name: 'Tuna',
-        biome: 'sea',
-        rarity: 'common',
-        depth: 'deep',
-        bait: 'shrimp',
-        description: 'Large oceanic fish. Deep waters only.',
-        points: 150,
-        image: 'example.png'
+        id: 7,
+        name: "Tuna",
+        biome: "sea",
+        depth: "deep",
+        bait: "shrimp",
+        rarity: "rare",
+        image: "assets/fish/tuna.png",
+        description: "Fast swimmer of the open sea."
     },
     {
-        id: 'sea_02',
-        name: 'Mackerel',
-        biome: 'sea',
-        rarity: 'common',
-        depth: 'medium',
-        bait: 'worm',
-        description: 'Fast swimmer. Medium depth with worms.',
-        points: 90,
-        image: 'example.png'
+        id: 8,
+        name: "Squid",
+        biome: "sea",
+        depth: "medium",
+        bait: "shrimp",
+        rarity: "common",
+        image: "assets/fish/squid.png",
+        description: "Uses ink to escape predators."
     },
     {
-        id: 'sea_03',
-        name: 'Squid',
-        biome: 'sea',
-        rarity: 'rare',
-        depth: 'medium',
-        bait: 'shrimp',
-        description: 'Mysterious cephalopod. Requires precise timing.',
-        points: 300,
-        image: 'example.png'
+        id: 9,
+        name: "Pufferfish",
+        biome: "sea",
+        depth: "shallow",
+        bait: "worm",
+        rarity: "epic",
+        image: "assets/fish/puffer.png",
+        description: "Inflates when threatened."
     }
 ];
 
@@ -113,4 +104,9 @@ export function getFishByBiome(biome) {
 // Get a fish by its ID
 export function getFishById(id) {
     return fishData.find(fish => fish.id === id);
+}
+
+// Get all fish
+export function getAllFish() {
+    return fishData;
 }
