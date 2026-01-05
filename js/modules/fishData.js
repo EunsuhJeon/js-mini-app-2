@@ -6,6 +6,7 @@ const fishData = [
         biome: "river",
         depth: "medium",  // S=shallow, M=medium, P=deep
         bait: "fly",
+        rarity: "common",
         image: "assets/fish/trout.png"
     },
     {
@@ -14,6 +15,7 @@ const fishData = [
         biome: "river",
         depth: "shallow",
         bait: "worm",
+        rarity: "common",
         image: "assets/fish/carp.png"
     },
     {
@@ -22,6 +24,7 @@ const fishData = [
         biome: "river",
         depth: "deep",
         bait: "shrimp",
+        rarity: "rare",
         image: "assets/fish/catfish.png"
     },
     
@@ -32,6 +35,7 @@ const fishData = [
         biome: "lake",
         depth: "shallow",
         bait: "worm",
+        rarity: "common",
         image: "assets/fish/perch.png"
     },
     {
@@ -40,6 +44,7 @@ const fishData = [
         biome: "lake",
         depth: "medium",
         bait: "lure",
+        rarity: "rare",
         image: "assets/fish/pike.png"
     },
     {
@@ -48,6 +53,7 @@ const fishData = [
         biome: "lake",
         depth: "deep",
         bait: "lure",
+        rarity: "epic",
         image: "assets/fish/bass.png"
     },
     
@@ -58,6 +64,7 @@ const fishData = [
         biome: "sea",
         depth: "deep",
         bait: "shrimp",
+        rarity: "rare",
         image: "assets/fish/tuna.png"
     },
     {
@@ -66,6 +73,7 @@ const fishData = [
         biome: "sea",
         depth: "medium",
         bait: "shrimp",
+        rarity: "common",
         image: "assets/fish/squid.png",
     },
     {
@@ -74,6 +82,7 @@ const fishData = [
         biome: "sea",
         depth: "shallow",
         bait: "worm",
+        rarity: "epic",
         image: "assets/fish/puffer.png"
     }
 ];
