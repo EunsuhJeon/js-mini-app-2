@@ -143,3 +143,28 @@ export function checkBait(selectedBait) {
     return isCorrect;
 }
 
+// ------------------------------
+// Check depth
+export function checkDepth(selectedDepth) {
+    if (!gameState.currentFish) {
+        console.error('No target fish selected!');
+        return false;
+    }
+
+    const isCorrect = gameState.currentFish.depth.toLowerCase() === selectedDepth;
+    gameState.currentDepth = selectedDepth;
+
+    console.log(`Depth check: ${selectedDepth} vs correct: ${gameState.targetDepth} - ${isCorrect ? 'CORRECT' : 'WRONG'}`);
+
+    if (isCorrect) {
+        gameState.currentPhase = 'depthSelected';
+        gameState.isFishHooked = true;
+        
+        // Calcular puntos parciales
+        gameState.phaseScore += 100;
+    } else {
+        gameState.currentPhase = 'idle';
+    }
+    
+    return isCorrect;
+}
