@@ -70,3 +70,37 @@ export function initializeRound() {
 
     return gameState;
 }
+
+// ------------------------------
+// Select fish
+export function selectRandomFish() {
+    console.log('Selecting a random fish for the round...');
+
+    // Get already caught fish
+    const caughtFishIds = getCaughtFish();
+
+    // Filter fish that have not been caught yet
+    const availableFish = fishData.filter(fish => !caughtFishIds.includes(fish.id));
+
+    let selectedFish;
+
+    if (availableFish.length > 0) {
+        // If there are available fish, select one randomly
+        const randomIndex = Math.floor(Math.random() * availableFish.length);
+        selectedFish = availableFish[randomIndex];
+        console.log(`New fish: ${selectedFish.name} {ID: ${selectedFish.id}}`);
+    } else {
+        // If all fish have been caught, allow repeats
+        const randomIndex = Math.floor(Math.random() * fishData.length);
+        selectedFish = fishData[randomIndex];
+        console.log(`All fish caught! Repeating fish: ${selectedFish.name} {ID: ${selectedFish.id}}`);
+    }
+
+    // Update game state
+    gameState.currentFish = selectedFish;
+    gameState.targetDepth = selectedFish.depth;
+
+    generateSequenceKeys();
+
+    return selectedFish;
+}
