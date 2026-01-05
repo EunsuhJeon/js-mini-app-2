@@ -104,3 +104,42 @@ export function selectRandomFish() {
 
     return selectedFish;
 }
+
+// ------------------------------
+// Run requiered functions for a new round
+export function loadRound(roundNumber) {
+    console.log(`📥 Loading Round ${roundNumber}`);
+    
+    // Update current round
+    gameState.currentRound = roundNumber;
+    
+    // Initialize round
+    initializeRound();
+    
+    // Select a random fish
+    selectRandomFish();
+    
+    console.log(`🎯 Target: ${gameState.currentFish.name} in ${gameState.currentFish.biome}`);
+    console.log(`🎯 Correct depth: ${gameState.targetDepth}, bait: ${gameState.currentFish.bait}`);
+    
+    return gameState;
+}
+
+// ------------------------------
+// Check bait
+export function checkBait(selectedBait) {
+    if (!gameState.currentBait) {
+        console.error('No target fish selected!');
+        return false;
+    }
+
+    const isCorrect = gameState.currrentFish.bait.toLowerCase() === selectedBait.toLowerCase();
+    gameState.currentBait = selectedBait;
+
+    console.log(`Bait check: ${selectedBait} for ${gameState.currentFish.name} - ${isCorrect ? 'Correct' : 'Incorrect'}`);
+
+    gameState.currentPhase = isCorrect ? 'baitSelected' : 'idle';
+
+    return isCorrect;
+}
+
