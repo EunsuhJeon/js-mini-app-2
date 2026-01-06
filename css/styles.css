@@ -1109,7 +1109,7 @@ body {
 }
 
 /* 이동 커서 (bite-meter용) */
-#bite-meter .cursor {
+#bite-meter-modal .cursor {
   position: absolute;
   top: 0;
   left: 0;
