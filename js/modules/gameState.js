@@ -238,3 +238,41 @@ export function checkKeySequence(currentKeys, timeUsed) {
     };
 }
 
+// ------------------------------
+// Round done ()
+export function completeRound() {
+    console.log(`Round ${gameState.currentRound} COMPLETED!`);
+    
+    // Calculate total score
+    gameState.score += gameState.phaseScore;
+    
+    // Calculate time bonus
+    const timeBonus = Math.max(0, 500 - (gameState.reelTime + gameState.keyTime) * 10);
+    gameState.score += timeBonus;
+    
+    console.log(`Score: ${gameState.phaseScore} + ${timeBonus} bonus = ${gameState.score} total`);
+    
+    // Prepare next round
+    const success = true;
+    gameState.currentPhase = 'result';
+    
+    return {
+        success: success,
+        score: gameState.score,
+        phaseScore: gameState.phaseScore,
+        timeBonus: timeBonus,
+        fish: gameState.currentFish
+    };
+}
+
+// ------------------------------
+// Go to next round
+export function nextRound() {
+    console.log(`⏭️ Moving to next round...`);
+
+    gameState.currentRound++;
+
+    loadRound(gameState.currentRound);
+    
+    return gameState.currentRound;
+}
