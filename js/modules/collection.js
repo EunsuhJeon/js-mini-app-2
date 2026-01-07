@@ -1,5 +1,5 @@
 // collection.js
-import { getAllFish, getFishById } from "./fishData.js";
+import { getAllFish, getFishById } from "./fishData";
 
 // 특정 fishId가 잡혔는지 상태를 바꾸는 함수
 export function markCaught(fishId) {

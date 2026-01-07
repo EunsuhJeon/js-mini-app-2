@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,356 +8,291 @@
     <link rel="stylesheet" href="../css/styles.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
+
 <body>
     <!-- Game Boy Frame -->
     <div id="gameboy-frame">
-      <div id="game-container">
-        <div class="screen-frame">
-          <div class="gb-screen">
-            
-            <!-- Round Transition -->
-            <div id="round-transition" class="screen hidden">
-            <div class="transition-content">
-                <h2>ROUND <span id="transition-round">1</span></h2>
-            </div>
-            </div>
-    
-            <!-- Game Screen -->
-            <div id="game-screen" class="screen">
-            <!-- Header -->
-            <div id="game-header">
-                <div class="header-grid">
-                    <div class="header-left">
-                        <div>BIOME:</div>
-                        <div id="header-biome" class="bold">RIVER</div>
-                    </div>
-                    <div class="header-center">
-                        <button id="book-button" class="book-btn">📖 BOOK</button>
-                    </div>
-                    <div class="header-right">
-                        <div>TARGET: <span id="header-target">SALMON</span></div>
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Game Area -->
-            <div id="game-area-container">
-                <div id="water-area">
-                    <div class="water-layer water-deep" data-depth="deep">
-                        <div class="depth-label">P</div>
-                        <!-- <div class="pixel-fish"><img src="../assets/fish/example.png" alt=""></div> -->
-                        <div class="anchor-icon hidden" id="anchor-deep">⚓</div>
-                    </div>
-                    <div class="water-layer water-medium" data-depth="medium">
-                        <div class="depth-label">M</div>
-                        <!-- <div class="pixel-fish"><img src="../assets/fish/example.png" alt=""></div> -->
-                        <div class="anchor-icon hidden" id="anchor-medium">⚓</div>
-                    </div>
-                    <div class="water-layer water-shallow" data-depth="shallow">
-                        <div class="depth-label">S</div>
-                        <!-- <div class="pixel-fish"><img src="../assets/fish/example.png" alt=""></div> -->
-                        <div class="anchor-icon hidden" id="anchor-shallow">⚓</div>
-                    </div>
-                    
-                    <!-- Depth Meter -->
-                    <div id="depth-meter" class="hidden">
-                        <div id="timingMeter" class="timing-meter">
-                            <div class="meter-labels">
-                                <span class="label">P</span>
-                                <span class="label">M</span>
-                                <span class="label">S</span>
-                            </div>
-                        <div class="meter-bar-container">
-                          <div class="meter-bar">
-                            <div class="zone p-zone"></div>
-                            <div class="zone m-zone"></div>
-                            <div class="zone s-zone"></div>
-                            <div id="cursor" class="cursor"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-                <div id="land-area">
-                <div class="angler-character">
-                    <img src="../assets/player/player.png" alt="player" class="player-image">
-                </div>
-                <button id="cast-button" class="cast-btn">CAST</button>
-                </div>
-            </div>
-            </div>
-    
-            <!-- Target Fish Overlay -->
-            <div id="target-modal" class="overlay hidden">
-            <div class="overlay-content">
-                <h2>TARGET FISH</h2>
-                <span class="close-icon">x</span>
-                <div class="fish-icon-large">
-                    <img src="../assets/fish/example.png" alt="example" class="target-fish-image">
-                </div>
-                <div id="overlay-fish-name" class="fish-name">ATLANTIC SALMON</div>
-                <div class="overlay-hint">CHECK BOOK FOR TIPS</div>
-            </div>
-            </div>
-    
-            <!-- Bait Modal -->
-            <div id="bait-modal" class="overlay hidden">
-            <div class="overlay-content">
-                <h2>SELECT BAIT</h2>
-                <span class="close-icon">x</span>
-                <div id="bait-grid" class="bait-grid">
-                    <button class="bait-btn">
-                        <div class="bait-btn-img"><img src="../assets/gear/worm.png" alt="worm" class="bait-image"></div>
-                        <div class="bait-btn-name">WORM</div>
-                    </button>
-                    <button class="bait-btn">
-                        <div class="bait-btn-img"><img src="../assets/gear/worm.png" alt="worm" class="bait-image"></div>
-                        <div class="bait-btn-name">FLY</div>
-                    </button>
-                    <button class="bait-btn">
-                        <div class="bait-btn-img"><img src="../assets/gear/worm.png" alt="worm" class="bait-image"></div>
-                        <div class="bait-btn-name">LURE</div>
-                    </button>
-                    <button class="bait-btn">
-                        <div class="bait-btn-img"><img src="../assets/gear/worm.png" alt="worm" class="bait-image"></div>
-                        <div class="bait-btn-name">SHRIMP</div>
-                    </button>
-                    </div>
-                <div class="modal-hint">CHOOSE WISELY!</div>
-            </div>
-            </div>
-    
-            <!-- Bite Meter -->
-            <div id="bite-meter-modal" class="overlay hidden">
-                <div id="biteModal" class="overlay-content">
-                    <span class="close-icon">x</span>
-                    <div class="modal-header">
-                    <h2 id="modalTitle">FISH BITE!</h2>
-                    </div>
-            
-                    <div id="fishDisplay" class="fish-display">
-                    <div class="fish-image-box">
-                        <span class="pixel-icon">
-                            <img class="bite-hook" src="../assets/gear/fishing-hook.png" alt="fishing hook">
-                            <img class="bite-fish" src="../assets/fish/example.png" alt="">
-                        </span>
-                    </div>
-                    <p id="biteStatus" class="status-text">STOP INSIDE THE TARGET!</p>
-                    </div>
-            
-                    <div id="bite-meter" class="timing-game">
-                    <div class="meter-container">
-                        <div id="timingMeter" class="meter-bar">
-                        <div id="successZone" class="zone success"></div>
-                        <div id="timingCursor" class="cursor"></div>
+        <div id="game-container">
+            <div class="screen-frame">
+                <div class="gb-screen">
+
+                    <!-- Round Transition -->
+                    <div id="round-transition" class="screen hidden">
+                        <div class="transition-content">
+                            <h2>ROUND <span id="transition-round">1</span></h2>
                         </div>
                     </div>
-                    <p class="instruction">CLICK TO CATCH!</p>
-                </div>
-              </div>
-            </div>
-    
-            <!-- QTE 1 (Reel) -->
-            <div id="qte1" class="overlay hidden">
-            <div class="overlay-content">
-                <h2>REEL IT IN!</h2>
-                <div id="reel-container">
-                <div class="reel-assembly" id="reelClickArea">
-                    <img
-                      src="../assets/gear/reel-body.png"
-                      class="reel-body"
-                      alt="Reel Body"
-                    />
-                    <img
-                      src="../assets/gear/reel-handle.png"
-                      id="reelHandle"
-                      class="reel-handle"
-                      alt="Reel Handle"
-                    />
-                  </div>
-                </div>
-                <p id="reelStatus" class="status-text">CLICK THE REEL AS FAST AS YOU CAN!</p>
-                <div class="stats">
-                    <p class="stats-text">CLICKS: <span id="reel-count">0</span> / 10</p>
-                    <p class="stats-text">Time: <span id="reel-time">0.0s</span></p>
-                </div>
-                <div class="progress-container">
-                    <div id="reel-progress" class="progress-bar">
-                        <div id="reel-progress-fill" class="progress-fill"></div>
-                    </div>
-                </div>
-                <div class="meter-hint">CLICK THE REEL!</div>
-            </div>
-            </div>
-    
-            <!-- QTE 2 (Keys) -->
-            <div id="qte2" class="overlay hidden">
-            <div class="overlay-content">
-                <span class="close-icon">×</span>
-                <h2>TYPE THE KEYS!</h2>
 
-                <div id="key-sequence" class="key-sequence">
-                <!-- Key boxes will be generated by JS -->
-                 <div class="key-box correct">A</div>
-                 <div class="key-box wrong">B</div>
-                 <div class="key-box">C</div>
-                 <div class="key-box">D</div>
-                </div>
-                <div class="progress-container">
-                <div id="key-timer" class="progress-bar">
-                    <div id="key-timer-fill" class="progress-fill"></div>
-                </div>
-                </div>
-                <div class="stats">
-                    <p class="stats-text">CORRECT: <span id="key-count">0</span> / 4</p>
-                    <p class="stats-text">Time: <span id="key-time">0.0s</span></p>
-                </div>
-                <div class="meter-hint">USE KEYBOARD</div>
-            </div>
-            </div>
-    
-            <!-- Result Modal -->
-            <div id="result-modal" class="overlay hidden">
-            <div class="overlay-content">
-                <h2 class="result-title">SUCCESS!</h2>
-                <div class="fish-icon-large fish-image-box">
-                    <img class="chatched-fish" src="../assets/fish/example.png" alt="">
-                </div>
-                <div id="result-fish-name" class="fish-name">FishName</div>
-                <div id="result-rarity" class="fish-rarity">rare</div>
-                <div id="result-points" class="points-display">+0 PTS</div>
-                <button id="list-button" class="pixel-button">LIST</button>
-                <button id="continue-button" class="pixel-button">CONTINUE</button>
-            </div>
-            </div>
-
-            <!-- Book Modal -->
-            <div id="encyclopedia-modal" class="overlay hidden">
-                <div class="encyclopedia-modal-container overlay-content">
-                    <div class="modal-header">
-                        <h2 id="modalTitle">ENCYCLOPEDIA</h2>
-                        <span class="close-icon">×</span>
-                    </div>
-                    <div class="modal-body">
-                        <div class="sidebar">
-                            <h3 class="side-title">BIOMES</h3>
-                            <div class="category-list">
-                                <button class="cat-btn active" onclick="showCategory('river')">River</button>
-                                <button class="cat-btn" onclick="showCategory('lake')">Lake</button>
-                                <button class="cat-btn" onclick="showCategory('sea')">Sea</button>
+                    <!-- Game Screen -->
+                    <div id="game-screen" class="screen">
+                        <!-- Header -->
+                        <div id="game-header">
+                            <div class="header-grid">
+                                <div class="header-left">
+                                    <div>BIOME:</div>
+                                    <div id="header-biome" class="bold">RIVER</div>
+                                </div>
+                                <div class="header-center">
+                                    <button id="book-button" class="book-btn">📖 BOOK</button>
+                                </div>
+                                <div class="header-right">
+                                    <div>TARGET: <span id="header-target">SALMON</span></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="main-content">
-                            <h3 id="categoryTitle" class="main-title">RIVER FISH</h3>
-                            <div id="fishList" class="fish-cards-container"></div>
+
+                        <!-- Game Area -->
+                        <div id="game-area-container">
+                            <div id="water-area">
+                                <div class="water-layer water-deep" data-depth="deep">
+                                    <div class="depth-label">P</div>
+                                    <!-- <div class="pixel-fish"><img src="../assets/fish/example.png" alt=""></div> -->
+                                    <div class="anchor-icon hidden" id="anchor-deep">⚓</div>
+                                </div>
+                                <div class="water-layer water-medium" data-depth="medium">
+                                    <div class="depth-label">M</div>
+                                    <!-- <div class="pixel-fish"><img src="../assets/fish/example.png" alt=""></div> -->
+                                    <div class="anchor-icon hidden" id="anchor-medium">⚓</div>
+                                </div>
+                                <div class="water-layer water-shallow" data-depth="shallow">
+                                    <div class="depth-label">S</div>
+                                    <!-- <div class="pixel-fish"><img src="../assets/fish/example.png" alt=""></div> -->
+                                    <div class="anchor-icon hidden" id="anchor-shallow">⚓</div>
+                                </div>
+
+                                <!-- Depth Meter -->
+                                <div id="depth-meter" class="hidden">
+                                    <div id="timingMeter" class="timing-meter">
+                                        <div class="meter-labels">
+                                            <span class="label">P</span>
+                                            <span class="label">M</span>
+                                            <span class="label">S</span>
+                                        </div>
+                                        <div class="meter-bar-container">
+                                            <div class="meter-bar">
+                                                <div class="zone p-zone"></div>
+                                                <div class="zone m-zone"></div>
+                                                <div class="zone s-zone"></div>
+                                                <div id="cursor" class="cursor"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="land-area">
+                                <div class="angler-character">
+                                    <img src="../assets/player/player.png" alt="player" class="player-image">
+                                </div>
+                                <button id="cast-button" class="cast-btn">CAST</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Target Fish Overlay -->
+                    <div id="target-modal" class="overlay hidden">
+                        <div class="overlay-content">
+                            <h2>TARGET FISH</h2>
+                            <span class="close-icon">x</span>
+                            <div class="fish-icon-large">
+                                <img src="../assets/fish/example.png" alt="example" class="target-fish-image">
+                            </div>
+                            <div id="overlay-fish-name" class="fish-name">ATLANTIC SALMON</div>
+                            <div class="overlay-hint">CHECK BOOK FOR TIPS</div>
+                        </div>
+                    </div>
+
+                    <!-- Bait Modal -->
+                    <div id="bait-modal" class="overlay hidden">
+                        <div class="overlay-content">
+                            <h2>SELECT BAIT</h2>
+                            <span class="close-icon">x</span>
+                            <div id="bait-grid" class="bait-grid">
+                                <button class="bait-btn">
+                                    <div class="bait-btn-img"><img src="../assets/gear/worm.png" alt="worm"
+                                            class="bait-image"></div>
+                                    <div class="bait-btn-name">WORM</div>
+                                </button>
+                                <button class="bait-btn">
+                                    <div class="bait-btn-img"><img src="../assets/gear/worm.png" alt="worm"
+                                            class="bait-image"></div>
+                                    <div class="bait-btn-name">FLY</div>
+                                </button>
+                                <button class="bait-btn">
+                                    <div class="bait-btn-img"><img src="../assets/gear/worm.png" alt="worm"
+                                            class="bait-image"></div>
+                                    <div class="bait-btn-name">LURE</div>
+                                </button>
+                                <button class="bait-btn">
+                                    <div class="bait-btn-img"><img src="../assets/gear/worm.png" alt="worm"
+                                            class="bait-image"></div>
+                                    <div class="bait-btn-name">SHRIMP</div>
+                                </button>
+                            </div>
+                            <div class="modal-hint">CHOOSE WISELY!</div>
+                        </div>
+                    </div>
+
+                    <!-- Bite Meter -->
+                    <div id="bite-meter-modal" class="overlay hidden">
+                        <div id="biteModal" class="overlay-content">
+                            <span class="close-icon">x</span>
+                            <div class="modal-header">
+                                <h2 id="modalTitle">FISH BITE!</h2>
+                            </div>
+
+                            <div id="fishDisplay" class="fish-display">
+                                <div class="fish-image-box">
+                                    <span class="pixel-icon">
+                                        <img class="bite-hook" src="../assets/gear/fishing-hook.png" alt="fishing hook">
+                                        <img class="bite-fish" src="../assets/fish/example.png" alt="">
+                                    </span>
+                                </div>
+                                <p id="biteStatus" class="status-text">STOP INSIDE THE TARGET!</p>
+                            </div>
+
+                            <div id="bite-meter" class="timing-game">
+                                <div class="meter-container">
+                                    <div id="timingMeter" class="meter-bar">
+                                        <div id="successZone" class="zone success"></div>
+                                        <div id="timingCursor" class="cursor"></div>
+                                    </div>
+                                </div>
+                                <p class="instruction">CLICK TO CATCH!</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QTE 1 (Reel) -->
+                    <div id="qte1" class="overlay hidden">
+                        <div class="overlay-content">
+                            <h2>REEL IT IN!</h2>
+                            <div id="reel-container">
+                                <div class="reel-assembly" id="reelClickArea">
+                                    <img src="../assets/gear/reel-body.png" class="reel-body" alt="Reel Body" />
+                                    <img src="../assets/gear/reel-handle.png" id="reelHandle" class="reel-handle"
+                                        alt="Reel Handle" />
+                                </div>
+                            </div>
+                            <p id="reelStatus" class="status-text">CLICK THE REEL AS FAST AS YOU CAN!</p>
+                            <div class="stats">
+                                <p class="stats-text">CLICKS: <span id="reel-count">0</span> / 10</p>
+                                <p class="stats-text">Time: <span id="reel-time">0.0s</span></p>
+                            </div>
+                            <div class="progress-container">
+                                <div id="reel-progress" class="progress-bar">
+                                    <div id="reel-progress-fill" class="progress-fill"></div>
+                                </div>
+                            </div>
+                            <div class="meter-hint">CLICK THE REEL!</div>
+                        </div>
+                    </div>
+
+                    <!-- QTE 2 (Keys) -->
+                    <div id="qte2" class="overlay hidden">
+                        <div class="overlay-content">
+                            <span class="close-icon">×</span>
+                            <h2>TYPE THE KEYS!</h2>
+
+                            <div id="key-sequence" class="key-sequence">
+                                <!-- Key boxes will be generated by JS -->
+                                <div class="key-box correct">A</div>
+                                <div class="key-box wrong">B</div>
+                                <div class="key-box">C</div>
+                                <div class="key-box">D</div>
+                            </div>
+                            <div class="progress-container">
+                                <div id="key-timer" class="progress-bar">
+                                    <div id="key-timer-fill" class="progress-fill"></div>
+                                </div>
+                            </div>
+                            <div class="stats">
+                                <p class="stats-text">CORRECT: <span id="key-count">0</span> / 4</p>
+                                <p class="stats-text">Time: <span id="key-time">0.0s</span></p>
+                            </div>
+                            <div class="meter-hint">USE KEYBOARD</div>
+                        </div>
+                    </div>
+
+                    <!-- Result Modal -->
+                    <div id="result-modal" class="overlay hidden">
+                        <div class="overlay-content">
+                            <h2 class="result-title">SUCCESS!</h2>
+                            <div class="fish-icon-large fish-image-box">
+                                <img class="chatched-fish" src="../assets/fish/example.png" alt="">
+                            </div>
+                            <div id="result-fish-name" class="fish-name">FishName</div>
+                            <div id="result-rarity" class="fish-rarity">rare</div>
+                            <div id="result-points" class="points-display">+0 PTS</div>
+                            <button id="list-button" class="pixel-button">LIST</button>
+                            <button id="continue-button" class="pixel-button">CONTINUE</button>
+                        </div>
+                    </div>
+
+                    <!-- Book Modal -->
+                    <div id="encyclopedia-modal" class="overlay hidden">
+                        <div class="encyclopedia-modal-container overlay-content">
+                            <div class="modal-header">
+                                <h2 id="modalTitle">ENCYCLOPEDIA</h2>
+                                <span class="close-icon">×</span>
+                            </div>
+                            <div class="modal-body">
+                                <div class="sidebar">
+                                    <h3 class="side-title">BIOMES</h3>
+                                    <div class="category-list">
+                                        <button class="cat-btn active" onclick="showCategory('river')">River</button>
+                                        <button class="cat-btn" onclick="showCategory('lake')">Lake</button>
+                                        <button class="cat-btn" onclick="showCategory('sea')">Sea</button>
+                                    </div>
+                                </div>
+                                <div class="main-content">
+                                    <h3 id="categoryTitle" class="main-title">RIVER FISH</h3>
+                                    <div id="fishList" class="fish-cards-container"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fish Collection Modal -->
+                    <div id="collection-modal" class="overlay hidden">
+                        <div class="overlay-content">
+                            <div class="modal-header">
+                                <h2 class="title">COLLECTION</h2>
+                                <span class="close-icon">×</span>
+                            </div>
+
+                            <div id="fishGrid" class="fish-grid"></div>
                         </div>
                     </div>
                 </div>
-              </div>
-    
-            <!-- Fish Collection Modal -->
-            <div id="collection-modal" class="overlay hidden">
-                <div class="overlay-content">
-                    <div class="modal-header">
-                    <h2 class="title">COLLECTION</h2>
-                    <span class="close-icon">×</span>
-                    </div>
-            
-                    <div id="fishGrid" class="fish-grid"></div>
-                </div>
             </div>
-          </div>
-          </div>
         </div>
-      </div>
     </div>
-  
+    </div>
 
-<!-- Live-reload code to automatically refresh the page or CSS during development -->
-  <script>
-      if ('WebSocket' in window) {
-          (function () {
-              function refreshCSS() {
-                  var sheets = [].slice.call(document.getElementsByTagName("link"));
-                  var head = document.getElementsByTagName("head")[0];
-                  for (var i = 0; i < sheets.length; ++i) {
-                      var elem = sheets[i];
-                      var parent = elem.parentElement || head;
-                      parent.removeChild(elem);
-                      var rel = elem.rel;
-                      if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-                          var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-                          elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-                      }
-                      parent.appendChild(elem);
-                  }
-              }
-              var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-              var address = protocol + window.location.host + window.location.pathname + '/ws';
-              var socket = new WebSocket(address);
-              socket.onmessage = function (msg) {
-                  if (msg.data == 'reload') window.location.reload();
-                  else if (msg.data == 'refreshcss') refreshCSS();
-              };
-              if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-                  console.log('Live reload enabled.');
-                  sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-              }
-          })();
-      }
-      else {
-          console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-      }
-  </script>
 
-  <!-- Fish Data Module example, Create content of Book Modal -->
-  <script>
-    const fishData = {
-        river: {
-            title: "RIVER FISH",
-            list: [
-                { name: "Trout", depth: "M", bait: "Flies", image: "../assets/fish/example.png" },
-                { name: "Carp", depth: "S", bait: "Worm", image: "../assets/fish/example.png" },
-                { name: "Catfish", depth: "P", bait: "Bait", image: "../assets/fish/example.png" }
-            ]
-        },
-        lake: {
-            title: "LAKE FISH",
-            list: [
-                { name: "Perch", depth: "S", bait: "Worm", image: "../assets/fish/example.png" },
-                { name: "Pike", depth: "M", bait: "Minnow", image: "../assets/fish/example.png" }
-            ]
-        },
-        sea: {
-            title: "SEA FISH",
-            list: [
-                { name: "Tuna", depth: "P", bait: "Shrimp", image: "../assets/fish/example.png" },
-                { name: "Squid", depth: "M", bait: "Jig", image: "../assets/fish/example.png" }
-            ]
-        }
-    };
+    <!-- Live-reload code to automatically refresh the page or CSS during development -->
+    <script>
+        function showCategory(catKey) {
+            // 1. Update active button state
+            const buttons = document.querySelectorAll('.cat-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.innerText.toLowerCase() === catKey) {
+                    btn.classList.add('active');
+                }
+            });
 
-    function showCategory(catKey) {
-        // 1. Update active button state
-        const buttons = document.querySelectorAll('.cat-btn');
-        buttons.forEach(btn => {
-            btn.classList.remove('active');
-            if(btn.innerText.toLowerCase() === catKey) {
-                btn.classList.add('active');
-            }
-        });
+            // 2. Update Title and List
+            const data = fishData[catKey];
+            document.getElementById('categoryTitle').innerText = data.title;
 
-        // 2. Update Title and List
-        const data = fishData[catKey];
-        document.getElementById('categoryTitle').innerText = data.title;
-        
-        const container = document.getElementById('fishList');
-        container.innerHTML = '';
+            const container = document.getElementById('fishList');
+            container.innerHTML = '';
 
-        data.list.forEach(fish => {
-            const card = document.createElement('div');
-            card.className = 'fish-card';
-            card.innerHTML = `
+            data.list.forEach(fish => {
+                const card = document.createElement('div');
+                card.className = 'fish-card';
+                card.innerHTML = `
                 <div class="fish-img-box"><img src="${fish.image}"></img></div>
                 <div class="fish-details">
                     <strong>${fish.name}</strong>
@@ -364,16 +300,17 @@
                     BAIT: ${fish.bait}
                 </div>
             `;
-            container.appendChild(card);
-        });
-    }
+                container.appendChild(card);
+            });
+        }
 
-  </script>
+    </script>
 
-   <script type="module" src="../js/main.js"></script>
-   <!-- <script type="module" src="../js/modules/collection.js"></script> -->
-   <script type="module" src="../js/modules/meterLogic.js"></script>
-   <script type="module" src="../js/modules/qte/qteSpin.js"></script>
-   <script type="module" src="../js/modules/ui/overlayUI.js"></script>
-  </body>
+    <script type="module" src="../js/main.js"></script>
+    <!-- <script type="module" src="../js/modules/collection.js"></script> -->
+    <script type="module" src="../js/modules/meterLogic.js"></script>
+    <script type="module" src="../js/modules/qte/qteSpin.js"></script>
+    <script type="module" src="../js/modules/ui/overlayUI.js"></script>
+</body>
+
 </html>

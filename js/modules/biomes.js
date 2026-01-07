@@ -29,3 +29,5 @@ export function getAllBiomes() {
 export function getBiomeById(id) {
     return biomesData.find(biome => biome.id === id);
 }
+
+export default biomesData;

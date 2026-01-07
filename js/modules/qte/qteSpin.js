@@ -1,5 +1,6 @@
-import { markCaught } from "../collection.js";
-
+//import { markCaught } from "../collection.js";
+import { addCaughtFish } from '../playerState.js';
+import { getGameState } from '../gameState.js';
 
 let clicks = 0;
 let currentRotation = 0;
@@ -82,7 +83,12 @@ export function handleVictory(fishId) {
 
         // 잡은 물고기 상태 업데이트
         // 예: QTE 성공 시 물고기 ID 3을 잡음 처리
-        markCaught(3); // Catfish 잡음 처리 후 콜렉션 UI 자동 갱신
+        //markCaught(3); // Catfish 잡음 처리 후 콜렉션 UI 자동 갱신
+        const state = getGameState();
+        if (state.currentFish) {
+            addCaughtFish(state.currentFish.id);
+            console.log(`🎉 ${state.currentFish.name} caught!`);
+        }
 
         // 이벤트 리스너 제거
         document.removeEventListener('keydown', handleQTE2);
