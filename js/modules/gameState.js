@@ -70,3 +70,101 @@ export function initializeRound() {
 
     return gameState;
 }
+
+// ------------------------------
+// Select fish
+export function selectRandomFish() {
+    console.log('Selecting a random fish for the round...');
+
+    // Get already caught fish
+    const caughtFishIds = getCaughtFish();
+
+    // Filter fish that have not been caught yet
+    const availableFish = fishData.filter(fish => !caughtFishIds.includes(fish.id));
+
+    let selectedFish;
+
+    if (availableFish.length > 0) {
+        // If there are available fish, select one randomly
+        const randomIndex = Math.floor(Math.random() * availableFish.length);
+        selectedFish = availableFish[randomIndex];
+        console.log(`New fish: ${selectedFish.name} {ID: ${selectedFish.id}}`);
+    } else {
+        // If all fish have been caught, allow repeats
+        const randomIndex = Math.floor(Math.random() * fishData.length);
+        selectedFish = fishData[randomIndex];
+        console.log(`All fish caught! Repeating fish: ${selectedFish.name} {ID: ${selectedFish.id}}`);
+    }
+
+    // Update game state
+    gameState.currentFish = selectedFish;
+    gameState.targetDepth = selectedFish.depth;
+
+    generateSequenceKeys();
+
+    return selectedFish;
+}
+
+// ------------------------------
+// Run requiered functions for a new round
+export function loadRound(roundNumber) {
+    console.log(`📥 Loading Round ${roundNumber}`);
+    
+    // Update current round
+    gameState.currentRound = roundNumber;
+    
+    // Initialize round
+    initializeRound();
+    
+    // Select a random fish
+    selectRandomFish();
+    
+    console.log(`🎯 Target: ${gameState.currentFish.name} in ${gameState.currentFish.biome}`);
+    console.log(`🎯 Correct depth: ${gameState.targetDepth}, bait: ${gameState.currentFish.bait}`);
+    
+    return gameState;
+}
+
+// ------------------------------
+// Check bait
+export function checkBait(selectedBait) {
+    if (!gameState.currentBait) {
+        console.error('No target fish selected!');
+        return false;
+    }
+
+    const isCorrect = gameState.currrentFish.bait.toLowerCase() === selectedBait.toLowerCase();
+    gameState.currentBait = selectedBait;
+
+    console.log(`Bait check: ${selectedBait} for ${gameState.currentFish.name} - ${isCorrect ? 'Correct' : 'Incorrect'}`);
+
+    gameState.currentPhase = isCorrect ? 'baitSelected' : 'idle';
+
+    return isCorrect;
+}
+
+// ------------------------------
+// Check depth
+export function checkDepth(selectedDepth) {
+    if (!gameState.currentFish) {
+        console.error('No target fish selected!');
+        return false;
+    }
+
+    const isCorrect = gameState.currentFish.depth.toLowerCase() === selectedDepth;
+    gameState.currentDepth = selectedDepth;
+
+    console.log(`Depth check: ${selectedDepth} vs correct: ${gameState.targetDepth} - ${isCorrect ? 'CORRECT' : 'WRONG'}`);
+
+    if (isCorrect) {
+        gameState.currentPhase = 'depthSelected';
+        gameState.isFishHooked = true;
+        
+        // Calcular puntos parciales
+        gameState.phaseScore += 100;
+    } else {
+        gameState.currentPhase = 'idle';
+    }
+    
+    return isCorrect;
+}
