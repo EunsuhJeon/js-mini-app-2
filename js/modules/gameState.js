@@ -108,7 +108,7 @@ export function selectRandomFish() {
 // ------------------------------
 // Run requiered functions for a new round
 export function loadRound(roundNumber) {
-    console.log(`📥 Loading Round ${roundNumber}`);
+    console.log(`Loading Round ${roundNumber}`);
     
     // Update current round
     gameState.currentRound = roundNumber;
@@ -144,7 +144,7 @@ export function checkBait(selectedBait) {
 }
 
 // ------------------------------
-// Check depth
+// Check depth (Phase 1)
 export function checkDepth(selectedDepth) {
     if (!gameState.currentFish) {
         console.error('No target fish selected!');
@@ -168,3 +168,49 @@ export function checkDepth(selectedDepth) {
     
     return isCorrect;
 }
+
+// ------------------------------
+// Check hook timing (Phase 2)
+export function checkHookTiming(clickPosition) {
+    console.log(`Hook timing check at ${clickPosition}%`);
+    
+    // Validate click position within hook zone
+    const zoneStart = gameState.hookZonePosition - (gameState.hookZoneSize / 2);
+    const zoneEnd = gameState.hookZonePosition + (gameState.hookZoneSize / 2);
+    
+    const isSuccessful = clickPosition >= zoneStart && clickPosition <= zoneEnd;
+    
+    if (isSuccessful) {
+        gameState.currentPhase = 'hookSuccess';
+        gameState.phaseScore += 150;
+        console.log("Perfect hook!");
+    } else {
+        gameState.currentPhase = 'hookFailed';
+        console.log("Hook failed!");
+    }
+    
+    return isSuccessful;
+}
+
+// ------------------------------
+// Check reel clicks (Phase 3)
+export function checkReelProgress(currentClicks, timeUsed) {
+    gameState.reelTime = timeUsed;
+    
+    const isComplete = currentClicks >= gameState.requiredClicks;
+    const progress = Math.min(100, (currentClicks / gameState.requiredClicks) * 100);
+    
+    if (isComplete) {
+        gameState.currentPhase = 'reelComplete';
+        gameState.phaseScore += 200;
+        console.log(`Reel complete! Time: ${timeUsed}s`);
+    }
+    
+    return {
+        complete: isComplete,
+        progress: progress,
+        required: gameState.requiredClicks,
+        current: currentClicks
+    };
+}
+
