@@ -214,3 +214,27 @@ export function checkReelProgress(currentClicks, timeUsed) {
     };
 }
 
+// ------------------------------
+// Check typing sequence (Phase 4)
+export function checkKeySequence(currentKeys, timeUsed) {
+    gameState.keyTime = timeUsed;
+    
+    const targetSequence = gameState.sequenceKeys;
+    const isComplete = currentKeys.length === targetSequence.length && currentKeys.every((key, index) => key === targetSequence[index]);
+    
+    const progress = Math.min(100, (currentKeys.length / targetSequence.length) * 100);
+    
+    if (isComplete) {
+        gameState.currentPhase = 'sequenceComplete';
+        gameState.phaseScore += 250;
+        console.log(`Sequence complete! Time: ${timeUsed}s`);
+    }
+    
+    return {
+        complete: isComplete,
+        progress: progress,
+        target: targetSequence,
+        current: currentKeys
+    };
+}
+
