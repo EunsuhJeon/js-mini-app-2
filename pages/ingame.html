@@ -127,7 +127,7 @@
             </div>
     
             <!-- Bite Meter -->
-            <div id="bite-meter" class="overlay hidden">
+            <div id="bite-meter-modal" class="overlay hidden">
                 <div id="biteModal" class="overlay-content">
                     <span class="close-icon">x</span>
                     <div class="modal-header">
@@ -141,10 +141,10 @@
                             <img class="bite-fish" src="../assets/fish/example.png" alt="">
                         </span>
                     </div>
-                    <p class="status-text">STOP INSIDE THE TARGET!</p>
+                    <p id="biteStatus" class="status-text">STOP INSIDE THE TARGET!</p>
                     </div>
             
-                    <div id="timingGame" class="timing-game">
+                    <div id="bite-meter" class="timing-game">
                     <div class="meter-container">
                         <div id="timingMeter" class="meter-bar">
                         <div id="successZone" class="zone success"></div>
@@ -175,6 +175,7 @@
                     />
                   </div>
                 </div>
+                <p id="reelStatus" class="status-text">CLICK THE REEL AS FAST AS YOU CAN!</p>
                 <div class="stats">
                     <p class="stats-text">CLICKS: <span id="reel-count">0</span> / 10</p>
                     <p class="stats-text">Time: <span id="reel-time">0.0s</span></p>
@@ -270,10 +271,6 @@
       </div>
     </div>
   
-    <!-- <script src="js/gameData.js"></script>
-    <script src="js/gameState.js"></script>
-    <script src="js/components.js"></script>
-    <script src="js/app.js"></script> -->
 
 <!-- Live-reload code to automatically refresh the page or CSS during development -->
   <script>
@@ -311,54 +308,6 @@
           console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
       }
   </script>
-
-<!-- QTE1: Reel Handle event -->
-  <script>
-    let clicks = 0;
-    let currentRotation = 0;
-    const maxClicks = 10;
-
-    const handle = document.getElementById("reelHandle");
-    const clickArea = document.getElementById("reelClickArea");
-    const gaugeFill = document.getElementById("reel-progress-fill");
-    const clickDisplay = document.getElementById("reel-count");
-
-    if (handle && clickArea && gaugeFill && clickDisplay) {
-        clickArea.addEventListener("click", () => {
-            if (clicks >= maxClicks) return;
-
-            clicks++;
-
-            currentRotation += 200;
-            handle.style.transform = `rotate(${currentRotation}deg)`;
-
-            clickDisplay.innerText = clicks;
-            gaugeFill.style.width = `${(clicks / maxClicks) * 100}%`;
-
-            if (clicks === maxClicks) {
-                clickArea.style.cursor = "default";
-                document.getElementById('qte2').classList.remove('hidden');
-                document.getElementById('qte1').classList.add('hidden');
-
-                // QTE2: for test
-                document.addEventListener('keydown', (e) => {
-                    const qte2 = document.getElementById('qte2');
-                    if (!qte2.classList.contains('hidden')) {
-                        qte2.classList.add('hidden');
-                        document.getElementById('result-modal').classList.remove('hidden');
-                    }
-                });
-            }
-        });
-    }
-  </script>
-
-  <!-- Fish Collection -->
-   <script>
-    document.getElementById('list-button').addEventListener('click', ()=>{
-        document.getElementById('collection-modal').classList.remove('hidden');
-    })
-   </script>
 
   <!-- Fish Data Module example, Create content of Book Modal -->
   <script>
@@ -421,196 +370,10 @@
 
   </script>
 
-<!-- Fish data expamle, Create content of Collection -->
-  <script>
-    const collectionData = [
-    {
-        id: 1,
-        name: "Trucha",
-        biome: "River",
-        caught: true,
-        img: "../assets/fish/example.png",
-    },
-    { id: 2, name: "Carp", biome: "River", caught: false, img: "../assets/fish/example.png" },
-    { id: 3, name: "Bass", biome: "Lake", caught: false, img: "../assets/fish/example.png" },
-    { id: 4, name: "Tuna", biome: "Sea", caught: false, img: "../assets/fish/example.png" },
-    { id: 5, name: "Squid", biome: "Sea", caught: false, img: "../assets/fish/example.png" },
-    {
-        id: 6,
-        name: "Puffer",
-        biome: "Sea",
-        caught: false,
-        img: "../assets/fish/example.png",
-    },
-    {
-        id: 7,
-        name: "Puffer",
-        biome: "Sea",
-        caught: false,
-        img: "../assets/fish/example.png",
-    },
-    ];
-
-    function renderCollection() {
-    const grid = document.getElementById("fishGrid");
-    grid.innerHTML = "";
-
-    collectionData.forEach((fish) => {
-        const slot = document.createElement("div");
-        // caught 여부에 따라 클래스 부여
-        slot.className = `fish-slot ${fish.caught ? "unlocked" : "locked"}`;
-
-        slot.innerHTML = `
-                <div class="fish-icon-wrapper">
-                    <img src="${fish.img}" alt="fish">
-                </div>
-                <div class="fish-name">${fish.caught ? fish.name : "???"}</div>
-                <div class="fish-biome">${fish.caught ? fish.biome : "???"}</div>
-            `;
-
-        grid.appendChild(slot);
-    });
-    }
-
-    window.onload = () => {
-        showCategory('river');
-        renderCollection();
-    };
-
-  </script>
-  
-  <!-- Water Depth meter event -->
-  <script>
-    const depthMeter = document.getElementById('depth-meter')
-    const cursor = document.getElementById('cursor')
-    const meterBar = document.querySelector('.meter-bar')
-    const zones = document.querySelectorAll('.zone')
-
-    let stopped = false;
-
-    function stopCursor() {
-        if (stopped) return;
-        stopped = true;
-
-        const cursorStyle = getComputedStyle(cursor);
-        const cursorLeft = parseFloat(cursorStyle.left);
-
-        cursor.style.animationPlayState = 'paused';
-
-        const barRect = meterBar.getBoundingClientRect();
-        const cursorCenter = barRect.left + cursorLeft + cursor.offsetWidth / 2;
-
-        let resultZone = null;
-
-        zones.forEach(zone => {
-            const rect = zone.getBoundingClientRect();
-            if (cursorCenter >= rect.left && cursorCenter <= rect.right) {
-                resultZone = zone.classList[1];
-            }
-        });
-
-        console.log(resultZone);
-
-        if (resultZone) {
-            document.getElementById('bite-meter').classList.remove('hidden');
-            document.getElementById('depth-meter').classList.add('hidden');
-        }
-    }
-
-    // 클릭 이벤트
-    depthMeter.addEventListener('click', stopCursor);
-
-    // 스페이스바 이벤트
-    document.addEventListener('keydown', (e) => {
-        if (e.code === 'Space') {
-            stopCursor();
-        }
-    });
-  </script>
-
-<!-- Bite meter event -->
-  <script>
-    const biteMeter = document.getElementById('bite-meter');
-    const timengCursor = document.getElementById('timingCursor');
-    const successZone = document.getElementById('successZone')
-    const statusText = document.querySelector('.status-text')
-
-    let biteStopped = false;
-    let catchSuccess = false;
-
-    biteMeter.addEventListener('click', () => {
-    if (biteStopped) return
-    biteStopped = true
-
-    timengCursor.style.animationPlayState = 'paused'
-
-    const cursorRect = timengCursor.getBoundingClientRect()
-    const zoneRect = successZone.getBoundingClientRect()
-
-    const cursorCenter = cursorRect.left + cursorRect.width / 2
-
-    if (cursorCenter >= zoneRect.left && cursorCenter <= zoneRect.right) {
-        catchSuccess = true;
-        statusText.textContent = 'SUCCESS';
-    } else {
-        catchSuccess = false;
-        statusText.textContent = 'FAIL'
-    }
-
-    if(catchSuccess){
-        document.getElementById('bite-meter').classList.add('hidden');
-        document.getElementById('qte1').classList.remove('hidden');
-    }
-    })
-  </script>
-
-  <!-- close button event -->
-   <script>
-    document.querySelectorAll('.close-icon').forEach(icon => {
-    icon.addEventListener('click', e => {
-        const overlay = e.currentTarget.closest('.overlay')
-        if (!overlay) return
-        overlay.classList.add('hidden')
-    })
-    })
-   </script>
-
-   <!-- open event -->
-   <script>
-    document.getElementById('book-button').addEventListener('click', () =>{
-        document.getElementById('encyclopedia-modal').classList.remove('hidden');
-    })
-    
-    document.getElementById('cast-button').addEventListener('click', () =>{
-        document.getElementById('bait-modal').classList.remove('hidden');
-    })
-
-    document.querySelectorAll('.bait-btn').forEach(bait =>{
-        bait.addEventListener('click', e => {
-            console.log(bait);
-            document.getElementById('bait-modal').classList.add('hidden');
-            document.getElementById('depth-meter').classList.remove('hidden');
-        })
-    })
-
-   </script>
-
-<!-- Round transition event -->
-   <script>
-    function showRound() {
-    document.getElementById('round-transition').classList.remove('hidden');
-    setTimeout(() => {
-        document.getElementById('round-transition').classList.add('hidden');
-    }, 3000)
-    setTimeout(() => {
-        document.getElementById('target-modal').classList.remove('hidden');
-    }, 3500)
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-        showRound();
-    })
-   </script>
-  
+   <script type="module" src="../js/main.js"></script>
+   <!-- <script type="module" src="../js/modules/collection.js"></script> -->
+   <script type="module" src="../js/modules/meterLogic.js"></script>
+   <script type="module" src="../js/modules/qte/qteSpin.js"></script>
+   <script type="module" src="../js/modules/ui/overlayUI.js"></script>
   </body>
 </html>
