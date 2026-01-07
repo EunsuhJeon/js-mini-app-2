@@ -1,3 +1,5 @@
+import { checkDepth } from './gameState.js';
+
 const depthMeter = document.getElementById('depth-meter')
 const depthCursor = document.getElementById('cursor')
 const meterBar = document.querySelector('.meter-bar')
@@ -10,6 +12,7 @@ const successZone = document.getElementById('successZone')
 const biteStatus = document.getElementById('biteStatus')
 
 const qte1 = document.getElementById('qte1')
+const baitModal = document.getElementById('bait-modal')
 
 const state = {
     active: 'depth',
@@ -29,6 +32,7 @@ function resetBiteMeter() {
     state.active = 'bite'
     timingCursor.style.animationPlayState = 'running'
     biteStatus.textContent = 'STOP INSIDE THE TARGET!';
+    biteStatus.style.color = ''; // 색상 초기화
 }
 
 function stopDepthMeter() {
@@ -44,20 +48,56 @@ function stopDepthMeter() {
     const cursorCenter = barRect.left + cursorLeft + depthCursor.offsetWidth / 2
 
     let resultZone = null
+    let selectedDepth = null
 
     zones.forEach(zone => {
         const rect = zone.getBoundingClientRect()
         if (cursorCenter >= rect.left && cursorCenter <= rect.right) {
             resultZone = zone
+            // zone의 클래스에서 깊이 추출 (p-zone, m-zone, s-zone)
+            const zoneClass = Array.from(zone.classList).find(cls => cls.includes('-zone'))
+            if (zoneClass) {
+                selectedDepth = zoneClass.split('-')[0] // 'p', 'm', 's'
+                // 'p' -> 'deep', 'm' -> 'medium', 's' -> 'shallow'
+                if (selectedDepth === 'p') selectedDepth = 'deep'
+                else if (selectedDepth === 'm') selectedDepth = 'medium'
+                else if (selectedDepth === 's') selectedDepth = 'shallow'
+            }
         }
     })
 
-    if (resultZone) {
-        depthMeter.classList.add('hidden')
-        biteMeterModal.classList.remove('hidden')
-        resetBiteMeter()
+    if (resultZone && selectedDepth) {
+        // gameState의 checkDepth 함수로 올바른 깊이인지 검증
+        const isCorrect = checkDepth(selectedDepth)
+        
+        // 시각적 피드백 추가
+        if (isCorrect) {
+            // 성공: 녹색 피드백
+            resultZone.style.backgroundColor = '#00ff00'
+            resultZone.style.transition = 'background-color 0.3s'
+            setTimeout(() => {
+                depthMeter.classList.add('hidden')
+                biteMeterModal.classList.remove('hidden')
+                resetBiteMeter()
+                // 색상 초기화
+                resultZone.style.backgroundColor = ''
+            }, 500)
+        } else {
+            // 실패: 빨간색 피드백
+            resultZone.style.backgroundColor = '#ff0000'
+            resultZone.style.transition = 'background-color 0.3s'
+            setTimeout(() => {
+                resultZone.style.backgroundColor = ''
+                resetDepthMeter()
+                // 실패 시 재시작
+                restartToPhase1()
+            }, 800)
+        }
     } else {
-        setTimeout(resetDepthMeter, 500)
+        // 구역을 선택하지 못한 경우
+        setTimeout(() => {
+            resetDepthMeter()
+        }, 500)
     }
 }
 
@@ -74,6 +114,7 @@ function stopBiteMeter() {
     if (cursorCenter >= zoneRect.left && cursorCenter <= zoneRect.right) {
         state.catchSuccess = true
         biteStatus.textContent = 'SUCCESS'
+        biteStatus.style.color = '#00ff00'
         setTimeout(() => {
             biteMeterModal.classList.add('hidden')
             qte1.classList.remove('hidden')
@@ -82,8 +123,35 @@ function stopBiteMeter() {
     } else {
         state.catchSuccess = false
         biteStatus.textContent = 'FAIL'
-        setTimeout(resetBiteMeter, 600)
+        biteStatus.style.color = '#ff0000'
+        setTimeout(() => {
+            resetBiteMeter()
+            // 실패 시 재시작
+            restartToPhase1()
+        }, 800)
     }
+}
+
+// 모든 단계에서 실패 시 Fase 1로 재시작하는 함수
+export function restartToPhase1() {
+    // 모든 모달 숨기기
+    biteMeterModal.classList.add('hidden')
+    qte1.classList.add('hidden')
+    document.getElementById('qte2')?.classList.add('hidden')
+    document.getElementById('result-modal')?.classList.add('hidden')
+    
+    // 상태 초기화
+    state.active = 'depth'
+    state.depthStopped = false
+    state.biteStopped = false
+    state.catchSuccess = false
+    
+    // 깊이 미터 재시작
+    depthMeter.classList.remove('hidden')
+    resetDepthMeter()
+    
+    // 미끼 모달 다시 표시 (선택을 다시 하도록)
+    baitModal.classList.remove('hidden')
 }
 
 depthMeter.addEventListener('click', stopDepthMeter)
