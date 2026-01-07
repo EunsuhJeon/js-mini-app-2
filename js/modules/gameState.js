@@ -1,5 +1,7 @@
-import fishData from './fish.js';
+import { getAllFish } from './fishData.js';
 import { getCaughtFish } from './playerState.js';
+
+const fishData = getAllFish();
 
 // =================================
 // INITIAL GAME STATES
@@ -168,3 +170,32 @@ export function checkDepth(selectedDepth) {
     
     return isCorrect;
 }
+
+// 게임 전체 초기화 (새로고침/라운드 1용)
+export function resetGame() {
+    // 현재 라운드 상태 초기화
+    gameState.currentRound = 1;
+    gameState.currentFish = null;
+    gameState.currentBait = null;
+    gameState.currentDepth = null;
+    gameState.currentPhase = "idle";
+    gameState.isCasting = false;
+    gameState.isFishHooked = false;
+    gameState.phaseScore = 0;
+    gameState.reelTime = 0;
+    gameState.keyTime = 0;
+    gameState.targetDepth = null;
+    gameState.squenceKeys = [];
+    gameState.score = 0;  // 총점도 초기화
+  
+    console.log("Game fully reset!");
+    return gameState;
+}
+
+export function getCurrentFish() {
+    return gameState.currentFish;
+}
+
+export function getCurrentRound() {
+    return gameState.currentRound;
+  }
