@@ -1,4 +1,4 @@
-import fishData from './fish.js';
+import fishData from './fishData.js';
 import { getCaughtFish } from './playerState.js';
 
 // =================================
@@ -36,8 +36,8 @@ const gameState = {
     //------------------------------
     // Info for every round
     targetDepth: null, // Right depth to catch the current fish
-    squenceKeys: [], // Keys to type during the typing phase
-    requieredClicks: 0 // Clicks required to reel in the fish
+    sequenceKeys: [], // Keys to type during the typing phase
+    requiredClicks: 0 // Clicks required to reel in the fish
 };
 
 // =================================
@@ -65,7 +65,7 @@ export function initializeRound() {
     if (gameState.currentFish) {
         const rarity = gameState.currentFish.rarity;
         gameState.hookZoneSize = rarity === 'common' ? 40 : rarity === 'rare' ? 30 : 20;
-        gameState.requieredClicks = rarity === 'common' ? 10 : rarity === 'rare' ? 15 : 20;
+        gameState.requiredClicks = rarity === 'common' ? 10 : rarity === 'rare' ? 15 : 20;
     }
 
     return gameState;
@@ -100,7 +100,7 @@ export function selectRandomFish() {
     gameState.currentFish = selectedFish;
     gameState.targetDepth = selectedFish.depth;
 
-    generateSequenceKeys();
+    generateKeySequence();
 
     return selectedFish;
 }
@@ -128,12 +128,12 @@ export function loadRound(roundNumber) {
 // ------------------------------
 // Check bait
 export function checkBait(selectedBait) {
-    if (!gameState.currentBait) {
+    if (!gameState.currentFish) {
         console.error('No target fish selected!');
         return false;
     }
 
-    const isCorrect = gameState.currrentFish.bait.toLowerCase() === selectedBait.toLowerCase();
+    const isCorrect = gameState.currentFish.bait === selectedBait.toLowerCase();
     gameState.currentBait = selectedBait;
 
     console.log(`Bait check: ${selectedBait} for ${gameState.currentFish.name} - ${isCorrect ? 'Correct' : 'Incorrect'}`);
@@ -268,7 +268,7 @@ export function completeRound() {
 // ------------------------------
 // Go to next round
 export function nextRound() {
-    console.log(`⏭️ Moving to next round...`);
+    console.log(`Moving to next round...`);
 
     gameState.currentRound++;
 
@@ -276,3 +276,42 @@ export function nextRound() {
     
     return gameState.currentRound;
 }
+
+// ------------------------------
+// Restart game
+export function resetGame() {
+    console.log("Resetting game...");
+    
+    gameState.currentRound = 1;
+    gameState.currentFish = null;
+    gameState.currentBait = null;
+    gameState.currentDepth = null;
+    gameState.score = 0;
+    gameState.phaseScore = 0;
+    gameState.currentPhase = 'idle';
+    gameState.isCasting = false;
+    gameState.isFishHooked = false;
+    
+    // Load first round
+    loadRound(1);
+    
+    console.log("Game reset complete");
+    return gameState;
+}
+
+// ------------------------------
+function generateKeySequence() {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const sequenceLength = 4 + Math.floor(gameState.currentRound / 3); //
+    
+    gameState.sequenceKeys = [];
+    
+    for (let i = 0; i < sequenceLength; i++) {
+        const randomIndex = Math.floor(Math.random() * letters.length);
+        gameState.sequenceKeys.push(letters[randomIndex]);
+    }
+    
+    console.log(`Key sequence generated: ${gameState.sequenceKeys.join(' ')}`);
+}
+
+export default gameState;
