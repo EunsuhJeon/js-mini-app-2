@@ -1,5 +1,7 @@
-import fishData from './fishData.js';
+import { getAllFish } from './fishData.js';
 import { getCaughtFish } from './playerState.js';
+
+const fishData = getAllFish();
 
 // =================================
 // INITIAL GAME STATES
@@ -169,149 +171,31 @@ export function checkDepth(selectedDepth) {
     return isCorrect;
 }
 
-// ------------------------------
-// Check hook timing (Phase 2)
-export function checkHookTiming(clickPosition) {
-    console.log(`Hook timing check at ${clickPosition}%`);
-    
-    // Validate click position within hook zone
-    const zoneStart = gameState.hookZonePosition - (gameState.hookZoneSize / 2);
-    const zoneEnd = gameState.hookZonePosition + (gameState.hookZoneSize / 2);
-    
-    const isSuccessful = clickPosition >= zoneStart && clickPosition <= zoneEnd;
-    
-    if (isSuccessful) {
-        gameState.currentPhase = 'hookSuccess';
-        gameState.phaseScore += 150;
-        console.log("Perfect hook!");
-    } else {
-        gameState.currentPhase = 'hookFailed';
-        console.log("Hook failed!");
-    }
-    
-    return isSuccessful;
-}
-
-// ------------------------------
-// Check reel clicks (Phase 3)
-export function checkReelProgress(currentClicks, timeUsed) {
-    gameState.reelTime = timeUsed;
-    
-    const isComplete = currentClicks >= gameState.requiredClicks;
-    const progress = Math.min(100, (currentClicks / gameState.requiredClicks) * 100);
-    
-    if (isComplete) {
-        gameState.currentPhase = 'reelComplete';
-        gameState.phaseScore += 200;
-        console.log(`Reel complete! Time: ${timeUsed}s`);
-    }
-    
-    return {
-        complete: isComplete,
-        progress: progress,
-        required: gameState.requiredClicks,
-        current: currentClicks
-    };
-}
-
-// ------------------------------
-// Check typing sequence (Phase 4)
-export function checkKeySequence(currentKeys, timeUsed) {
-    gameState.keyTime = timeUsed;
-    
-    const targetSequence = gameState.sequenceKeys;
-    const isComplete = currentKeys.length === targetSequence.length && currentKeys.every((key, index) => key === targetSequence[index]);
-    
-    const progress = Math.min(100, (currentKeys.length / targetSequence.length) * 100);
-    
-    if (isComplete) {
-        gameState.currentPhase = 'sequenceComplete';
-        gameState.phaseScore += 250;
-        console.log(`Sequence complete! Time: ${timeUsed}s`);
-    }
-    
-    return {
-        complete: isComplete,
-        progress: progress,
-        target: targetSequence,
-        current: currentKeys
-    };
-}
-
-// ------------------------------
-// Round done ()
-export function completeRound() {
-    console.log(`Round ${gameState.currentRound} COMPLETED!`);
-    
-    // Calculate total score
-    gameState.score += gameState.phaseScore;
-    
-    // Calculate time bonus
-    const timeBonus = Math.max(0, 500 - (gameState.reelTime + gameState.keyTime) * 10);
-    gameState.score += timeBonus;
-    
-    console.log(`Score: ${gameState.phaseScore} + ${timeBonus} bonus = ${gameState.score} total`);
-    
-    // Prepare next round
-    const success = true;
-    gameState.currentPhase = 'result';
-    
-    return {
-        success: success,
-        score: gameState.score,
-        phaseScore: gameState.phaseScore,
-        timeBonus: timeBonus,
-        fish: gameState.currentFish
-    };
-}
-
-// ------------------------------
-// Go to next round
-export function nextRound() {
-    console.log(`Moving to next round...`);
-
-    gameState.currentRound++;
-
-    loadRound(gameState.currentRound);
-    
-    return gameState.currentRound;
-}
-
-// ------------------------------
-// Restart game
+// 게임 전체 초기화 (새로고침/라운드 1용)
 export function resetGame() {
-    console.log("Resetting game...");
-    
+    // 현재 라운드 상태 초기화
     gameState.currentRound = 1;
     gameState.currentFish = null;
     gameState.currentBait = null;
     gameState.currentDepth = null;
-    gameState.score = 0;
-    gameState.phaseScore = 0;
-    gameState.currentPhase = 'idle';
+    gameState.currentPhase = "idle";
     gameState.isCasting = false;
     gameState.isFishHooked = false;
-    
-    // Load first round
-    loadRound(1);
-    
-    console.log("Game reset complete");
+    gameState.phaseScore = 0;
+    gameState.reelTime = 0;
+    gameState.keyTime = 0;
+    gameState.targetDepth = null;
+    gameState.squenceKeys = [];
+    gameState.score = 0;  // 총점도 초기화
+  
+    console.log("Game fully reset!");
     return gameState;
 }
 
-// ------------------------------
-function generateKeySequence() {
-    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const sequenceLength = 4 + Math.floor(gameState.currentRound / 3); //
-    
-    gameState.sequenceKeys = [];
-    
-    for (let i = 0; i < sequenceLength; i++) {
-        const randomIndex = Math.floor(Math.random() * letters.length);
-        gameState.sequenceKeys.push(letters[randomIndex]);
-    }
-    
-    console.log(`Key sequence generated: ${gameState.sequenceKeys.join(' ')}`);
+export function getCurrentFish() {
+    return gameState.currentFish;
 }
 
-export default gameState;
+export function getCurrentRound() {
+    return gameState.currentRound;
+  }

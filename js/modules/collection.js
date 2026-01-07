@@ -1,11 +1,16 @@
-// collection.js
-import { getAllFish, getFishById } from "./fishData";
+import { getAllFish, getFishById } from "./fishData.js";
+import { getCaughtFish, addCaughtFish } from "./playerState.js";
 
-// 특정 fishId가 잡혔는지 상태를 바꾸는 함수
+// 특정 fishId가 잡혔는지 상태를 저장하는 함수
 export function markCaught(fishId) {
   const fish = getFishById(fishId);
-  if (fish) fish.caught = true; // 잡았다고 상태 변경
-  renderCollection();          // UI 업데이트
+  if (!fish) return;
+
+  // 수집 상태는 playerState에만 저장
+  addCaughtFish(fishId);
+
+  // UI 업데이트
+  renderCollection();
 }
 
 // 콜렉션 UI 렌더링
@@ -15,16 +20,21 @@ export function renderCollection() {
 
   grid.innerHTML = "";
 
-  getAllFish().forEach(fish => {
+  const allFish = getAllFish();
+  const caughtIds = getCaughtFish(); // [1, 3, 5] 같은 배열
+
+  allFish.forEach(fish => {
+    const isCaught = caughtIds.includes(fish.id);
+
     const slot = document.createElement("div");
-    slot.className = `fish-slot ${fish.caught ? "unlocked" : "locked"}`;
+    slot.className = `fish-slot ${isCaught ? "unlocked" : "locked"}`;
 
     slot.innerHTML = `
       <div class="fish-icon-wrapper">
-        <img src="${fish.caught ? fish.image : 'assets/fish/placeholder.png'}" alt="${fish.name}">
+        <img src="${isCaught ? '../' + fish.image : 'assets/fish/placeholder.png'}" alt="${fish.name}">
       </div>
-      <div class="fish-name">${fish.caught ? fish.name : "???"}</div>
-      <div class="fish-biome">${fish.caught ? fish.biome : "???"}</div>
+      <div class="fish-name">${isCaught ? fish.name : "???"}</div>
+      <div class="fish-biome">${isCaught ? fish.biome : "???"}</div>
     `;
 
     grid.appendChild(slot);
