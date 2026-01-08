@@ -71,7 +71,15 @@ export function handleVictory() {
 
     // QTE1 숨기고 QTE2 보이기
     if (qte1) qte1.classList.add('hidden');
-    if (qte2) qte2.classList.remove('hidden');
+
+    import('./qteKeys.js').then(module => {
+        module.startKeySequencePhase();
+    }).catch(error => {
+        console.error("Failed to load key sequence module:", error);
+        
+        showResultModal();
+    });
+    /*if (qte2) qte2.classList.remove('hidden');
 
     // QTE2: 아무 키 입력 시 결과 처리
     const handleQTE2 = (e) => {
@@ -93,9 +101,8 @@ export function handleVictory() {
 
         // 이벤트 리스너 제거
         document.removeEventListener('keydown', handleQTE2);
-    };
+    };*/
 
-    document.addEventListener('keydown', handleQTE2);
 }
 
 function showResultModal(fish) {

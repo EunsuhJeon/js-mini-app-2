@@ -1,5 +1,5 @@
 // /js/modules/collection.js
-import { getAllFish } from './fishData.js';
+/* import { getAllFish } from './fishData.js';
 import { getCaughtFish } from './playerState.js';
 
 export function renderCollection() {
@@ -26,4 +26,4 @@ export function renderCollection() {
         
         grid.appendChild(slot);
     });
-}
+}*/

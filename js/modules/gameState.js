@@ -171,6 +171,23 @@ export function checkDepth(selectedDepth) {
     return isCorrect;
 }
 
+// ------------------------------
+// KEY SEQUENCE GENERATION
+
+function generateKeySequence() {
+    // Generar secuencia aleatoria de letras
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const sequenceLength = 6; // Número de teclas a presionar
+    gameState.sequenceKeys = [];
+    
+    for (let i = 0; i < sequenceLength; i++) {
+        const randomIndex = Math.floor(Math.random() * letters.length);
+        gameState.sequenceKeys.push(letters[randomIndex]);
+    }
+    
+    console.log(`Generated key sequence: ${gameState.sequenceKeys.join(', ')}`);
+}
+
 // 게임 전체 초기화 (새로고침/라운드 1용)
 export function resetGame() {
     // 현재 라운드 상태 초기화
@@ -192,10 +209,35 @@ export function resetGame() {
     return gameState;
 }
 
+export function getGameState () {
+    return {...gameState};
+}
+
 export function getCurrentFish() {
     return gameState.currentFish;
 }
 
 export function getCurrentRound() {
     return gameState.currentRound;
-  }
+}
+
+export function getKeySequence() {
+    return [...gameState.sequenceKeys];
+}
+
+export function checkKeySequence(inputSequence) {
+    if (!gameState.sequenceKeys || gameState.sequenceKeys.length === 0) {
+        console.error("No key sequence generated!");
+        return false;
+    }
+    
+    const isCorrect = inputSequence.length === gameState.sequenceKeys.length && inputSequence.every((key, index) => key === gameState.sequenceKeys[index]);
+    
+    if (isCorrect) {
+        gameState.phaseScore += 100;
+        gameState.score += gameState.phaseScore;
+        console.log(`Key sequence correct! Total score: ${gameState.score}`);
+    }
+    
+    return isCorrect;
+}

@@ -1,13 +1,13 @@
-// /js/modules/gameMain.js
-import { resetGame, loadRound } from './gameState.js';
+// /js/modules/gameMain.js - VERSIÓN CORREGIDA
+import { resetGame, loadRound, getGameState } from './gameState.js';
 import { resetPlayerState } from './playerState.js';
-import { updateGameUI, startNewRound } from './uiConnector.js';
-import { setupDepthMeter } from './phaseManager.js';
-import { renderCompendium } from './compendium.js';
+import { updateGameUI } from './uiConnector.js';
+import { renderCompendium, initCompendiumEvents } from './compendium.js';
 import { renderCollection } from './collection.js';
+import { initGame } from './modules/gameMain.js';
 
 export function initGame() {
-    console.log("🎮 Initializing game...");
+    console.log("Initializing game...");
     
     resetGame();
     resetPlayerState();
@@ -17,20 +17,31 @@ export function initGame() {
     updateGameUI();
     renderCompendium();
     renderCollection();
-    
-    setupDepthMeter();
+    initCompendiumEvents();
     
     setupBasicEvents();
     
     console.log("Game ready!");
+    console.log("Current state:", getGameState());
 }
 
 function setupBasicEvents() {
     document.getElementById('continue-button')?.addEventListener('click', () => {
         const state = getGameState();
         const nextRound = state.currentRound + 1;
-        startNewRound(nextRound);
-        showRoundTransition(nextRound);
+        
+        if (nextRound <= 9) { 
+            loadRound(nextRound);
+            showRoundTransition(nextRound);
+            updateGameUI();
+        } else {
+            alert("You've completed all rounds! Game finished!");
+        }
+    });
+    
+    document.getElementById('list-button')?.addEventListener('click', () => {
+        renderCollection();
+        document.getElementById('collection-modal')?.classList.remove('hidden');
     });
 }
 
@@ -44,7 +55,7 @@ function showRoundTransition(roundNumber) {
         
         setTimeout(() => {
             transition.classList.add('hidden');
-            document.getElementById('target-modal').classList.remove('hidden');
+            document.getElementById('target-modal')?.classList.remove('hidden');
         }, 2000);
     }
 }
@@ -56,4 +67,3 @@ if (document.readyState === 'loading') {
 }
 
 window.initGame = initGame;
-window.startNewRound = startNewRound;
