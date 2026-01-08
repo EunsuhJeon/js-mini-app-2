@@ -26,8 +26,6 @@ function showRound() {
         updateTargetModal();
         document.getElementById('target-modal').classList.remove('hidden');
     }, 3500)
-
-    // animationLoop();  // 루프 시작
 }
 
 function updateTargetModal() {

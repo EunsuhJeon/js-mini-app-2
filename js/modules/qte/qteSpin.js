@@ -64,8 +64,9 @@ export function handleVictory() {
     clearInterval(timerInterval);
     if (clickArea) clickArea.style.cursor = "default";
     if (reelStatus) {
-        reelStatus.textContent = 'SUCCESS!';
-        reelStatus.style.color = '#00ff00';
+        $("#reelStatus")
+        .text('SUCCESS!')
+        .css('color', '#00ff00')
     }
 
     // QTE1 숨기고 QTE2 보이기
