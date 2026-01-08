@@ -137,7 +137,7 @@ function gameOver() {
     }, 1500);
 }
 
-function resetQTE() {
+export function resetQTE() {
     clicks = 0;
     currentRotation = 0;
     timeLeft = timeLimit;
@@ -156,3 +156,28 @@ function resetQTE() {
         reelStatus.style.color = '';
     }
 }
+
+// reelLogic.js (QTE 파일) 하단에 추가
+// export function resetQTE() {
+//     clicks = 0;
+//     currentRotation = 0;
+//     timeLeft = timeLimit;
+//     isGameOver = false;
+//     if (timerInterval) {
+//       clearInterval(timerInterval);
+//       timerInterval = null;
+//     }
+//     if (handle) handle.style.transform = 'rotate(0deg)';
+//     if (gaugeFill) gaugeFill.style.width = '0%';
+//     if (clickDisplay) clickDisplay.innerText = '0';
+//     if (timeDisplay) timeDisplay.innerText = `${timeLimit.toFixed(1)}s`;
+//     if (clickArea) {
+//       clickArea.style.pointerEvents = "auto";
+//       clickArea.style.cursor = "pointer";  // 클릭 가능 상태
+//     }
+//     if (reelStatus) {
+//       reelStatus.textContent = 'CLICK THE REEL AS FAST AS YOU CAN!';
+//       reelStatus.style.color = '';
+//     }
+//   }
+  

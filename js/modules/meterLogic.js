@@ -1,4 +1,5 @@
-import { checkDepth } from './gameState.js';
+import { checkDepth, getCurrentFish } from './gameState.js';
+import { resetQTE } from './qte/qteSpin.js';
 
 const depthMeter = document.getElementById('depth-meter')
 const depthCursor = document.getElementById('cursor')
@@ -13,6 +14,7 @@ const biteStatus = document.getElementById('biteStatus')
 
 const qte1 = document.getElementById('qte1')
 const baitModal = document.getElementById('bait-modal')
+const biteFishImage = document.querySelector('.bite-fish')
 
 const state = {
     active: 'depth',
@@ -21,10 +23,11 @@ const state = {
     catchSuccess: false
 }
 
-function resetDepthMeter() {
+export function resetDepthMeter() {
     state.depthStopped = false
     state.active = 'depth'
-    depthCursor.style.animationPlayState = 'running'
+    if(depthCursor)
+        depthCursor.style.animationPlayState = 'running'
 }
 
 function resetBiteMeter() {
@@ -33,6 +36,12 @@ function resetBiteMeter() {
     timingCursor.style.animationPlayState = 'running'
     biteStatus.textContent = 'STOP INSIDE THE TARGET!';
     biteStatus.style.color = ''; // 색상 초기화
+}
+
+function updateBiteFish() {
+    const fish = getCurrentFish();
+    biteFishImage.src = `../${fish.image}`
+    biteFishImage.alt = fish
 }
 
 function stopDepthMeter() {
@@ -72,14 +81,15 @@ function stopDepthMeter() {
         
         // 시각적 피드백 추가
         if (isCorrect) {
-            // 성공: 녹색 피드백
             resultZone.style.backgroundColor = '#00ff00'
             resultZone.style.transition = 'background-color 0.3s'
             setTimeout(() => {
                 depthMeter.classList.add('hidden')
                 biteMeterModal.classList.remove('hidden')
+        
+                updateBiteFish()
                 resetBiteMeter()
-                // 색상 초기화
+        
                 resultZone.style.backgroundColor = ''
             }, 500)
         } else {
@@ -151,11 +161,11 @@ export function restartToPhase1() {
     resetDepthMeter()
     
     // 미끼 모달 다시 표시 (선택을 다시 하도록)
-    baitModal.classList.remove('hidden')
+    // baitModal.classList.remove('hidden')
 }
 
-depthMeter.addEventListener('click', stopDepthMeter)
-biteMeter.addEventListener('click', stopBiteMeter)
+depthMeter?.addEventListener('click', stopDepthMeter)
+biteMeter?.addEventListener('click', stopBiteMeter)
 
 document.addEventListener('keydown', e => {
     if (e.code !== 'Space') return
@@ -163,4 +173,65 @@ document.addEventListener('keydown', e => {
     if (state.active === 'bite') stopBiteMeter()
 })
 
-resetDepthMeter()
+resetDepthMeter();
+
+// document.getElementById("play-button")?.addEventListener("click", () => {
+//     spinRoulette();  // 최소한의 액션
+//   });
+  
+//   const player = { score: 0, upgrades: {} };  // 최소 객체 리터럴
+
+
+
+  ////////
+  // meterLogic.js 하단에 추가 (resetDepthMeter() 아래)
+
+// 이벤트 리스너 재설치 함수
+// function reinstallEventListeners() {
+//     // 기존 리스너 제거 (중복 방지)
+//     depthMeter.removeEventListener('click', stopDepthMeter);
+//     biteMeter.removeEventListener('click', stopBiteMeter);
+//     document.removeEventListener('keydown', handleKeydown);
+    
+//     // 새로 설치
+//     depthMeter.addEventListener('click', stopDepthMeter);
+//     biteMeter.addEventListener('click', stopBiteMeter);
+//     document.addEventListener('keydown', handleKeydown);
+//   }
+  
+//   // 키다운 핸들러 별도 함수로 분리
+//   function handleKeydown(e) {
+//     if (e.code !== 'Space') return;
+//     if (state.active === 'depth') stopDepthMeter();
+//     if (state.active === 'bite') stopBiteMeter();
+//   }
+  
+//   // restartToPhase1() 수정
+//   // meterLogic.js의 restartToPhase1() 함수 수정
+// export function restartToPhase1() {
+//     // 기존 코드...
+//     biteMeterModal.classList.add('hidden');
+//     qte1.classList.add('hidden');
+//     document.getElementById('qte2')?.classList.add('hidden');
+//     document.getElementById('result-modal')?.classList.add('hidden');
+    
+//     state.active = 'depth';
+//     state.depthStopped = false;
+//     state.biteStopped = false;
+//     state.catchSuccess = false;
+    
+//     depthMeter.classList.remove('hidden');
+//     resetDepthMeter();
+//     baitModal.classList.remove('hidden');
+    
+//     // **QTE 상태 완전 초기화** ⭐
+//     resetQTE();
+    
+//     reinstallEventListeners();
+//   }
+  
+  
+//   // 초기 실행 시 한 번 설치
+//   reinstallEventListeners();
+  
+  

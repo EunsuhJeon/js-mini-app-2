@@ -1,6 +1,9 @@
 import { getAllFish } from './fishData.js';
 import { getCaughtFish } from './playerState.js';
 
+const upgrades = new Map([["betterRod", {level: 0}]]);
+const unlockedAchievements = new Set(["firstCatch"]);
+
 const fishData = getAllFish();
 
 // =================================
@@ -40,6 +43,9 @@ const gameState = {
     targetDepth: null, // Right depth to catch the current fish
     squenceKeys: [], // Keys to type during the typing phase
     requieredClicks: 0 // Clicks required to reel in the fish
+
+    ,upgrades: upgrades
+    ,achievements: unlockedAchievements
 };
 
 // =================================
@@ -102,7 +108,7 @@ export function selectRandomFish() {
     gameState.currentFish = selectedFish;
     gameState.targetDepth = selectedFish.depth;
 
-    generateSequenceKeys();
+    // generateSequenceKeys();
 
     return selectedFish;
 }
@@ -130,12 +136,12 @@ export function loadRound(roundNumber) {
 // ------------------------------
 // Check bait
 export function checkBait(selectedBait) {
-    if (!gameState.currentBait) {
+    if (!gameState.currentFish.bait) {
         console.error('No target fish selected!');
         return false;
     }
 
-    const isCorrect = gameState.currrentFish.bait.toLowerCase() === selectedBait.toLowerCase();
+    const isCorrect = gameState.currentFish.bait.toLowerCase() === selectedBait.toLowerCase();
     gameState.currentBait = selectedBait;
 
     console.log(`Bait check: ${selectedBait} for ${gameState.currentFish.name} - ${isCorrect ? 'Correct' : 'Incorrect'}`);
