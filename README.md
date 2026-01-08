@@ -1,6 +1,6 @@
 # 🎣 Angler’s Trial
 
-**Angler’s Trial** is a retro-style fishing mini-game inspired by classic 8-bit / 16-bit Nintendo-era games. Created by Eunsuh Jeon and Santiago Minotta, it emphasizes pixel-art aesthetics, timing-based gameplay, and modular JavaScript architecture.
+**Angler’s Trial** is a retro-style fishing mini-game inspired by classic 8-bit / 16-bit Nintendo-era games. Created by **Eunsuh Jeon** and **Santiago Minotta**, it emphasizes pixel-art aesthetics, timing-based gameplay, and modular JavaScript architecture.
 
 ---
 
