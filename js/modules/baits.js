@@ -22,9 +22,8 @@ const baitsData = [
 ];
 
 export function getBaitByCode(code) {
-    return baitsData.find(bait => bait.code === code);
+    return baitsData.find(bait => bait.name.toLowerCase() === code.toLowerCase());
 }
-
 export function getAllBaits() {
     return baitsData;
 }

@@ -56,7 +56,6 @@ function startTimer() {
 
 export function handleVictory() {
     const qte1 = document.getElementById('qte1');
-    const qte2 = document.getElementById('qte2');
     const resultModal = document.getElementById('result-modal');
     const reelStatus = document.getElementById('reelStatus');
     const clickArea = document.getElementById('reelClickArea');
@@ -71,29 +70,19 @@ export function handleVictory() {
 
     // QTE1 숨기고 QTE2 보이기
     if (qte1) qte1.classList.add('hidden');
-    if (qte2) qte2.classList.remove('hidden');
 
     // QTE2: 아무 키 입력 시 결과 처리
-    const handleQTE2 = (e) => {
-        if (!qte2 || qte2.classList.contains('hidden')) return;
-
-        // QTE2 숨기기
-        qte2.classList.add('hidden');
-
-        // 현재 물고기 정보 가져오기
-        const currentFish = getCurrentFish();
-        
-        // 결과 모달에 물고기 정보 표시
-        showResultModal(currentFish);
-
-        // 잡은 물고기 상태 업데이트
-        if (currentFish) {
-            markCaught(currentFish.id);
-        }
-
-        // 이벤트 리스너 제거
-        document.removeEventListener('keydown', handleQTE2);
-    };
+    setTimeout(() => {
+        // Importar dinámicamente para evitar dependencias circulares
+        import('./qteKeys.js').then(module => {
+            module.startQTE2();
+        }).catch(error => {
+            console.error('Error al cargar QTE2:', error);
+            // Fallback: mostrar resultado directamente
+            const currentFish = getCurrentFish();
+            showResultModal(currentFish);
+        });
+    }, 500);
 
     document.addEventListener('keydown', handleQTE2);
 }
@@ -154,6 +143,13 @@ export function resetQTE() {
     if (reelStatus) {
         reelStatus.textContent = 'CLICK THE REEL AS FAST AS YOU CAN!';
         reelStatus.style.color = '';
+    }
+
+    const qte2 = document.getElementById('qte2');
+    if (qte2 && !qte2.classList.contains('hidden')) {
+        import('./qteKeys.js').then(module => {
+            module.resetQTE2();
+        });
     }
 }
 
