@@ -241,9 +241,9 @@
                         <div class="sidebar">
                             <h3 class="side-title">BIOMES</h3>
                             <div class="category-list">
-                                <button class="cat-btn active" onclick="showCategory('river')">River</button>
-                                <button class="cat-btn" onclick="showCategory('lake')">Lake</button>
-                                <button class="cat-btn" onclick="showCategory('sea')">Sea</button>
+                                <button class="cat-btn active" data-biome='river'>River</button>
+                                <button class="cat-btn" data-biome='lake'>Lake</button>
+                                <button class="cat-btn" data-biome='sea'>Sea</button>
                             </div>
                         </div>
                         <div class="main-content">
@@ -270,105 +270,6 @@
         </div>
       </div>
     </div>
-  
-
-<!-- Live-reload code to automatically refresh the page or CSS during development -->
-  <script>
-      if ('WebSocket' in window) {
-          (function () {
-              function refreshCSS() {
-                  var sheets = [].slice.call(document.getElementsByTagName("link"));
-                  var head = document.getElementsByTagName("head")[0];
-                  for (var i = 0; i < sheets.length; ++i) {
-                      var elem = sheets[i];
-                      var parent = elem.parentElement || head;
-                      parent.removeChild(elem);
-                      var rel = elem.rel;
-                      if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
-                          var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
-                          elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
-                      }
-                      parent.appendChild(elem);
-                  }
-              }
-              var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
-              var address = protocol + window.location.host + window.location.pathname + '/ws';
-              var socket = new WebSocket(address);
-              socket.onmessage = function (msg) {
-                  if (msg.data == 'reload') window.location.reload();
-                  else if (msg.data == 'refreshcss') refreshCSS();
-              };
-              if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
-                  console.log('Live reload enabled.');
-                  sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
-              }
-          })();
-      }
-      else {
-          console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
-      }
-  </script>
-
-  <!-- Fish Data Module example, Create content of Book Modal -->
-  <script>
-    const fishData = {
-        river: {
-            title: "RIVER FISH",
-            list: [
-                { name: "Trout", depth: "M", bait: "Flies", image: "../assets/fish/example.png" },
-                { name: "Carp", depth: "S", bait: "Worm", image: "../assets/fish/example.png" },
-                { name: "Catfish", depth: "P", bait: "Bait", image: "../assets/fish/example.png" }
-            ]
-        },
-        lake: {
-            title: "LAKE FISH",
-            list: [
-                { name: "Perch", depth: "S", bait: "Worm", image: "../assets/fish/example.png" },
-                { name: "Pike", depth: "M", bait: "Minnow", image: "../assets/fish/example.png" }
-            ]
-        },
-        sea: {
-            title: "SEA FISH",
-            list: [
-                { name: "Tuna", depth: "P", bait: "Shrimp", image: "../assets/fish/example.png" },
-                { name: "Squid", depth: "M", bait: "Jig", image: "../assets/fish/example.png" }
-            ]
-        }
-    };
-
-    function showCategory(catKey) {
-        // 1. Update active button state
-        const buttons = document.querySelectorAll('.cat-btn');
-        buttons.forEach(btn => {
-            btn.classList.remove('active');
-            if(btn.innerText.toLowerCase() === catKey) {
-                btn.classList.add('active');
-            }
-        });
-
-        // 2. Update Title and List
-        const data = fishData[catKey];
-        document.getElementById('categoryTitle').innerText = data.title;
-        
-        const container = document.getElementById('fishList');
-        container.innerHTML = '';
-
-        data.list.forEach(fish => {
-            const card = document.createElement('div');
-            card.className = 'fish-card';
-            card.innerHTML = `
-                <div class="fish-img-box"><img src="${fish.image}"></img></div>
-                <div class="fish-details">
-                    <strong>${fish.name}</strong>
-                    DEPTH: ${fish.depth}<br>
-                    BAIT: ${fish.bait}
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    }
-
-  </script>
 
    <script type="module" src="../js/main.js"></script>
    <script type="module" src="../js/modules/gameState.js"></script>
