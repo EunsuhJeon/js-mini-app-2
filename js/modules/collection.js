@@ -31,7 +31,7 @@ export function renderCollection() {
 
     slot.innerHTML = `
       <div class="fish-icon-wrapper">
-        <img src="${isCaught ? '../' + fish.image : 'assets/fish/placeholder.png'}" alt="${fish.name}">
+        <img src="${'../' + fish.image}" alt="${fish.name}">
       </div>
       <div class="fish-name">${isCaught ? fish.name : "???"}</div>
       <div class="fish-biome">${isCaught ? fish.biome : "???"}</div>
